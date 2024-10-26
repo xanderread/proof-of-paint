@@ -14,19 +14,18 @@ const signInFn = async (
   setAgent: React.Dispatch<React.SetStateAction<HttpAgent | null>>,
   active: boolean
 ) => {
-  const delegation = await signin(active);
-  const [agent, actor] = (await authenticate(delegation)) ?? [null, null];
+  const [agent, actor] = (await authenticate()) ?? [null, null];
 
-  if (actor) {
-    console.log('Authenticated as', actor);
-    window.localStorage.setItem('delegation', JSON.stringify(delegation));
+  if (agent && actor) {
     setAgent(agent);
     setActor(actor);
     setState('authenticated');
+  } else if (active) {
+    setState('loading');
+    await signin();
+    signInFn(setActor, setState, setAgent, false);
   } else {
-    console.log('Not authenticated');
     setState('unauthenticated');
-    window.localStorage.removeItem('delegation');
   }
 };
 

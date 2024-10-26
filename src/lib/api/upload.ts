@@ -2,6 +2,8 @@ import { HttpAgent } from '@dfinity/agent';
 import { AssetManager } from '@dfinity/assets';
 
 export const upload = async (agent: HttpAgent, file: File) => {
+  console.log('Agent', agent);
+
   console.log('Uploading file: ', file);
   const assetManager = new AssetManager({ canisterId: 'bd3sg-teaaa-aaaaa-qaaba-cai', agent });
   console.log('Asset manager created: ', assetManager);
