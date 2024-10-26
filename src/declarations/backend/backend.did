@@ -1,25 +1,74 @@
+type Trie = 
+ variant {
+   branch: Branch;
+   "empty";
+   leaf: Leaf;
+ };
 type Time = int;
-type PhotoUploadMetadata = 
+type Set = 
+ variant {
+   branch: Branch;
+   "empty";
+   leaf: Leaf;
+ };
+type Metadata = 
  record {
-   artist: ArtistDetails;
-   date: Time;
    gps: GPS;
+   likersPrincipalID: Set;
+   principalID: text;
+   time: Time;
  };
 type Main = 
  service {
-   addMetadata: (text, ArtistDetails, GPS, Time, text) -> ();
-   addVote: (text, text, bool) -> () query;
-   getAllStortedVotes: (text) -> (nat, nat) query;
-   getMetadata: (text) -> (opt PhotoUploadMetadata) query;
+   addArtist: (text, text, text) -> (bool);
+   addLike: (text, text) -> (bool);
+   addMetadata: (text, text, GPS, Time) -> (bool);
+   getAllMetadataByArtist: (text) -> (vec Metadata);
+   getArtist: (text) -> (opt Artist) query;
+   getMetadata: (text) -> (opt Metadata) query;
  };
+type List = 
+ opt record {
+       record {
+         Key;
+         null;
+       };
+       List;
+     };
+type Leaf = 
+ record {
+   keyvals: AssocList;
+   size: nat;
+ };
+type Key = 
+ record {
+   hash: Hash;
+   key: text;
+ };
+type Hash = nat32;
 type GPS = 
  record {
    latitude: float64;
    longitude: float64;
  };
-type ArtistDetails = 
+type Branch = 
+ record {
+   left: Trie;
+   right: Trie;
+   size: nat;
+ };
+type AssocList = 
+ opt record {
+       record {
+         Key;
+         null;
+       };
+       List;
+     };
+type Artist = 
  record {
    alias: text;
-   walletAddress: text;
+   photoKeys: Set;
+   walletAddr: text;
  };
 service : () -> Main

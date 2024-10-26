@@ -1,3 +1,5 @@
+import './styles/app.css';
+
 import React, { createContext, useEffect, useState } from 'react';
 
 import { authenticate, signin, signout } from './lib/util/authenticate';
@@ -42,26 +44,33 @@ function App() {
 
   return (
     <>
-      {!user || user.state === 'unauthenticated' ? (
-        <button onClick={() => signInFn(setUser, true)}>Sign in</button>
-      ) : (
-        <button
-          onClick={() => {
-            signOutButtonClick(setUser);
-          }}
-        >
-          Sign out
-        </button>
-      )}
-      {user && (
-        <UserContext.Provider value={user}>
-          <p>State: {user.state}</p>
-          <p>Actor: {JSON.stringify(user.actor) || 'None'}</p>
-          <p>Principal: {principal || 'None'}</p>
-          {user.state === 'authenticated' && <Upload />}
-          <Gallery />
-        </UserContext.Provider>
-      )}
+      <UserContext.Provider value={user}>
+        <div className="buttons">
+          {!user || user.state === 'unauthenticated' ? (
+            <button className="account-btn sign-in-btn" onClick={() => signInFn(setUser, true)}>
+              Sign in
+            </button>
+          ) : (
+            <button
+              className="account-btn sign-out-btn"
+              onClick={() => {
+                signOutButtonClick(setUser);
+              }}
+            >
+              Sign out
+            </button>
+          )}
+        </div>
+        {user && (
+          <div className="debug">
+            <p>State: {user.state}</p>
+            <p>Actor: {JSON.stringify(user.actor) || 'None'}</p>
+            <p>Principal: {principal || 'None'}</p>
+          </div>
+        )}
+        {user.state === 'authenticated' && <Upload />}
+        <Gallery />
+      </UserContext.Provider>
     </>
   );
 }

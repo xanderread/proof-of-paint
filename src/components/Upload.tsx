@@ -1,3 +1,5 @@
+import '../styles/upload.css';
+
 import { upload } from '../lib/api/upload';
 import { useContext } from 'react';
 import { UserContext } from '../App';
@@ -14,7 +16,7 @@ export default function Upload() {
 
   if (user && user.state === 'authenticated') {
     return (
-      <div>
+      <div className='upload-btn-container'>
         <input
           type="file"
           accept="image/*"
@@ -30,7 +32,7 @@ export default function Upload() {
           }}
         />
         <label htmlFor="file-upload">
-          <button type="button" onClick={() => document.getElementById('file-upload')?.click()}>
+          <button type="button" className='upload-btn' onClick={() => document.getElementById('file-upload')?.click()}>
             Upload Image
           </button>
         </label>

@@ -3,7 +3,7 @@
   column-gap: 0;
   padding: 0;
   column-count: 1;
-  margin: 1rem 8%;
+  margin: 1rem 5%;
 }
 
 .gallery-image {
@@ -12,6 +12,11 @@
   margin: 0;
   box-sizing: border-box;
   break-inside: avoid;
+  transition: all 150ms;
+}
+
+.gallery-image:hover {
+  filter: opacity(0.85) blur(1px);
 }
 
 @media (min-width: 320px) and (max-width: 979.5px) {
@@ -22,7 +27,7 @@
 }
 @media (min-width: 980px) and (max-width: 1023.5px) {
   .container {
-    margin: 1rem 5%;
+    margin: 1rem 3.5%;
   }
 }
 @media (min-width: 1024px) {
