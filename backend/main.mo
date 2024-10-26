@@ -3,7 +3,6 @@ import Text "mo:base/Text";
 import Time "mo:base/Time";
 import Bool "mo:base/Bool";
 import Array "mo:base/Array";
-import TrieSet "mo:base/TrieSet";
 import Iter "mo:base/Iter";
 
 actor class Main() {
@@ -23,7 +22,7 @@ actor class Main() {
         principalID: Text;
         gps: GPS;
         time: Time.Time;
-        likersPrincipalID: TrieSet.Set<Text>;
+        likersPrincipalID: [Text];
     };
     type GPS = {
         latitude : Float;
@@ -33,7 +32,7 @@ actor class Main() {
     type Artist = {
         alias: Text;
         walletAddr: Text;
-        photoKeys: TrieSet.Set<Text>;
+        photoKeys: [Text];
     };
 
     public func addMetadata(principalID: Text, photoKey: Text, gps: GPS, time: Time.Time): async Bool {
@@ -47,12 +46,11 @@ actor class Main() {
                             gps;
                             time;
                             photoKey;
-                            likersPrincipalID = TrieSet.empty<Text>();
+                            likersPrincipalID = [];
                         };
                         metadataStorage.put(photoKey, metadata);
                         
                         // TODO: add photoKey into artist.photoKeys and update artist in storage
-                        // Add photoKey into artist.photoKeys and update artist in storage
                         
                         true
                     };
@@ -74,11 +72,10 @@ actor class Main() {
     public func getAllMetadataByArtist(principalID: Text): async [Metadata] {
         switch (artistStorage.get(principalID)) {
             case (?artist) {
-                let photoKeyArray = TrieSet.toArray(artist.photoKeys);
                 var metadataArr: [Metadata] = [];
 
                 // Iterate over each photoKey and collect metadata
-                for (photoKey in photoKeyArray.vals()) {
+                for (photoKey in artist.photoKeys.vals()) {
                     switch (metadataStorage.get(photoKey)) {
                         case (?metadata) {
                             metadataArr := Array.append(metadataArr, [metadata]);
@@ -102,7 +99,7 @@ actor class Main() {
                 let artist = {
                     alias;
                     walletAddr;
-                    photoKeys = TrieSet.empty<Text>();
+                    photoKeys = [];
                 };
                 artistStorage.put(principalID, artist);
                 true
@@ -114,17 +111,23 @@ actor class Main() {
         artistStorage.get(principalID)
     };
 
-    public func addLike(principalID: Text, photoKey: Text): async Bool {
+    public func addLike(principalID: Text, photoKey: Text): async() {
         switch (artistStorage.get(principalID)) {
-            case (artist) {
-
-                // TODO: Check artist hasn't already liked photo
-                // if they havent't, add them to TrieSet, update artist in storage and return true
-                // else return false
-
-                true
+            case (?_artist) {
+                switch(metadataStorage.get(photoKey)){
+                    case(?metadata) {
+                        
+                        for (likerPrincipalID in metadata.likersPrincipalID.vals()){
+                            if (likerPrincipalID == principalID)
+                            {return;}
+                        };                  
+                        
+                        // TODO: add principalID to metadata.likersPrincipalID and update metadata
+                    };
+                    case null{};
+                };
             };
-            case null {false};
+            case null {};
         };
     };
     
