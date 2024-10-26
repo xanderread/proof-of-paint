@@ -55,12 +55,15 @@ actor class Main() {
 		metadataStorage.put(photoKey, metadata);
 	};
 
+	public func getAllPhotoKeys(): async[Text] {
+		Iter.toArray(metadataStorage.keys())
+	};
+
 	// Retrieve metadata by photo ID
 	public query func getMetadata(photoKey : Text) : async ?PhotoUploadMetadata {
 		metadataStorage.get(photoKey)
 	};
 
-	
 	// key will need to be generated in FE, looks hard to do in Mokoto
 	public query func addVote(voteKey: Text, photoKey: Text, isUp: Bool) : async () {
 		let vote = {photoKey; isUp};
