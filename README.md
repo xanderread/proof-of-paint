@@ -20,6 +20,7 @@ We built a <u>decentralised</u> street art gallery where artists can <u>anonymou
 ### FAQ
 
 **Surely this exists already?**
+
 We looked and looked but couldn't find anything that addresses our problem with street art.
 
 NFTs don’t solve this problem because:
