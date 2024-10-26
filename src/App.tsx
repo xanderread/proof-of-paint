@@ -1,24 +1,24 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { backend } from './declarations/backend';
 import './App.css';
 import { authenticate } from './lib/authenticate';
 import { signin } from './lib/signin';
 import { ActorSubclass } from '@dfinity/agent';
 import { _SERVICE } from './declarations/backend/backend.did';
-import { greet } from './lib/greet';
 import { signout } from './lib/signout';
 
-const signInButtonClick = async (
+const signInFn = async (
   setActor: React.Dispatch<React.SetStateAction<ActorSubclass<_SERVICE>>>,
-  setState: React.Dispatch<React.SetStateAction<State>>
+  setState: React.Dispatch<React.SetStateAction<State>>,
+  active: boolean
 ) => {
-  const delegation = await signin();
+  const delegation = await signin(active);
   const actor = await authenticate();
 
   window.localStorage.setItem('delegation', JSON.stringify(delegation));
 
   if (actor) {
-    console.log('Authenticated as', await greet(actor, 'Hello'), actor);
+    console.log('Authenticated as', actor);
 
     setActor(actor);
     setState('authenticated');
@@ -38,12 +38,16 @@ function App() {
   const [state, setState] = useState('loading' as State);
   const [actor, setActor] = useState(backend);
 
+  useEffect(() => {
+    signInFn(setActor, setState, false);
+  }, []);
+
   return (
     <>
       {state === 'loading' || state === 'unauthenticated' ? (
         <button
           onClick={() => {
-            signInButtonClick(setActor, setState);
+            signInFn(setActor, setState, true);
           }}
         >
           Sign in

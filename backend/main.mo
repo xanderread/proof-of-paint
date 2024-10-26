@@ -4,7 +4,7 @@ import Time "mo:base/Time";
 import Iter "mo:base/Iter";
 import Bool "mo:base/Bool";
 
-actor class Main(initArgs : { phrase : Text }) {
+actor class Main() {
 
 	var initialSize = 1000;
 	var metadataStorage = HashMap.HashMap<Text, PhotoUploadMetadata>(initialSize, Text.equal, Text.hash);
@@ -13,10 +13,6 @@ actor class Main(initArgs : { phrase : Text }) {
 	// Not sure what this is for?
 	stable var metadataEntries : [(Text, PhotoUploadMetadata)] = [];
 	stable var voteEntries : [(Text, VoteUpload)] = [];
-
-	public query func greet(name : Text) : async Text {
-		return initArgs.phrase # ", " # name # "!";
-	};
 
 	// single vote for both Up/Like and down/dislike
 	type VoteUpload = {

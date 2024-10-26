@@ -9,16 +9,13 @@ export interface Main {
     [string, ArtistDetails, GPS, Time, string],
     undefined
   >,
+  'addVote' : ActorMethod<[string, string, boolean], undefined>,
+  'getAllStortedVotes' : ActorMethod<[string], [bigint, bigint]>,
   'getMetadata' : ActorMethod<[string], [] | [PhotoUploadMetadata]>,
-  'greet' : ActorMethod<[string], string>,
-  'listAllMetadata' : ActorMethod<[], Array<PhotoUploadMetadata>>,
-  'whoAmI' : ActorMethod<[], Principal>,
 }
 export interface PhotoUploadMetadata {
-  'id' : string,
   'gps' : GPS,
   'date' : Time,
-  'assetLink' : string,
   'artist' : ArtistDetails,
 }
 export type Time = bigint;

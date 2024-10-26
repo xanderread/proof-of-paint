@@ -19,17 +19,19 @@ const authenticateWithII = () => {
   });
 };
 
-export const signin = async () => {
+export const signin = async (prompt = false) => {
   const exists = localStorage.getItem('delegation');
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let delegation: any;
   if (exists) {
     delegation = JSON.parse(exists);
     console.log('Delegation exists', delegation);
-  } else {
+  } else if (prompt) {
     const success = await authenticateWithII();
     delegation = success.delegations[0];
     localStorage.setItem('delegation', JSON.stringify(delegation));
+  } else {
+    throw new Error('No delegation found');
   }
   return delegation;
 };
