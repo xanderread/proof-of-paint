@@ -1,11 +1,12 @@
-import { AuthClient } from '@dfinity/auth-client';
+import { AuthClient, InternetIdentityAuthResponseSuccess } from '@dfinity/auth-client';
 
-export const signin = () => {
-  return new Promise(async (resolve, reject) => {
-    // create an auth client
-    let authClient = await AuthClient.create();
+// @ts-expect-error BigInt is not defined in the browser
+BigInt.prototype.toJSON = function() { return this.toString() }
 
-    // start the login process and wait for it to finish
+const authenticateWithII = () => {
+  // eslint-disable-next-line no-async-promise-executor
+  return new Promise<InternetIdentityAuthResponseSuccess>(async (resolve, reject) => {
+    const authClient = await AuthClient.create();
     authClient.login({
       identityProvider:
         process.env.DFX_NETWORK === 'ic'
@@ -16,4 +17,19 @@ export const signin = () => {
       windowOpenerFeatures: `toolbar=0,location=0,menubar=0,width=400,height=600,left=${window.screen.width / 2 - 200},top=${window.screen.height / 2 - 300}`,
     });
   });
+};
+
+export const signin = async () => {
+  const exists = localStorage.getItem('delegation');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let delegation: any;
+  if (exists) {
+    delegation = JSON.parse(exists);
+    console.log('Delegation exists', delegation);
+  } else {
+    const success = await authenticateWithII();
+    delegation = success.delegations[0];
+    localStorage.setItem('delegation', JSON.stringify(delegation));
+  }
+  return delegation;
 };

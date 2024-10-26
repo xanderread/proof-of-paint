@@ -12,12 +12,14 @@ const signInButtonClick = async (
   setActor: React.Dispatch<React.SetStateAction<ActorSubclass<_SERVICE>>>,
   setState: React.Dispatch<React.SetStateAction<State>>
 ) => {
-  const out = await signin();
-  console.log('Sign in attempt: ', out);
+  const delegation = await signin();
   const actor = await authenticate();
 
+  window.localStorage.setItem('delegation', JSON.stringify(delegation));
+
   if (actor) {
-    console.log('Authenticated as', await greet(actor, 'Hello'));
+    console.log('Authenticated as', await greet(actor, 'Hello'), actor);
+
     setActor(actor);
     setState('authenticated');
   }

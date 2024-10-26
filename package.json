@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "redeploy": "npm run build && dfx deploy"
   },
   "dependencies": {
     "@dfinity/agent": "^2.1.3",
