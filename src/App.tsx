@@ -1,25 +1,23 @@
 import { useState } from 'react';
-import { AuthClient } from '@dfinity/auth-client';
-import { createActor, canisterId } from './declarations/backend';
-import { HttpAgent } from '@dfinity/agent';
+import { backend } from './declarations/backend';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
-
-const authenticate = async () => {
-  const authClient = await AuthClient.create();
-  const state = (await authClient.isAuthenticated()) ? 'authenticated' : 'unauthenticated';
-  if (state === 'authenticated') {
-    const identity = authClient.getIdentity();
-    // const agent = new HttpAgent({ identity });
-    const agent = await HttpAgent.create({ identity });
-    const actor = createActor(canisterId, { agent });
-    return actor;
-  }
-}
+import { authenticate } from './lib/authenticate';
+import { greet } from './lib/greet';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [greeted, setGreeted] = useState<string | null>(null);
+  const [actor, setActor] = useState(backend);
+
+  authenticate().then((actor) => {
+    if (actor) {
+      setActor(actor);
+      greet(actor, 'world').then((greeted) => {
+        setGreeted(greeted);
+      });
+    }
+  });
 
   return (
     <>
