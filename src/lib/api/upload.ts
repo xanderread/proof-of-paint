@@ -1,14 +1,9 @@
-import { HttpAgent } from '@dfinity/agent';
-import { AssetManager } from '@dfinity/assets';
+import { User } from '../structs/User';
 
-export const upload = async (agent: HttpAgent, file: File) => {
-  console.log('Agent', agent);
+export const upload = async (user: User, file: File) => {
+  if (!user.assetManager) throw new Error('User is not authenticated');
 
-  console.log('Uploading file: ', file);
-  const assetManager = new AssetManager({ canisterId: 'bd3sg-teaaa-aaaaa-qaaba-cai', agent });
-  console.log('Asset manager created: ', assetManager);
-
-  const batch = assetManager.batch();
+  const batch = user.assetManager.batch();
   const items = await Promise.all(
     [file].map(async (file) => {
       const key = await batch.store(file, { path: '/uploads', fileName: file.name });

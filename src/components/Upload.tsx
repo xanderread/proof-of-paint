@@ -1,19 +1,29 @@
-import { HttpAgent } from '@dfinity/agent';
 import { upload } from '../lib/api/upload';
-import { State } from '../lib/types';
+import { useContext } from 'react';
+import { UserContext } from '../App';
+import { User } from '../lib/structs/User';
 
-export default function Upload({curstate, agent}: {curstate: State, agent: HttpAgent | null}) {
-  if (curstate === 'authenticated' && agent) {
+const uploadHandler = async (user: User, file: File) => {
+  const result = await upload(user, file);
+  const keys = result.map((item) => item.key);
+  console.log('Uploaded keys:', keys);
+  return keys;
+}
+
+export default function Upload() {
+  const user = useContext(UserContext);
+
+  if (user && user.state === 'authenticated') {
     return (
-      <button
-        onClick={async () => {
-          const result = await upload(agent, new File(['hello'], 'hello.txt'));
-          const keys = result.map((item) => item.key);
-          console.log('Uploaded keys:', keys);
+      <input
+        type="file"
+
+        onChange={(e) => {
+          if (e.target.files && e.target.files.length > 0) {
+            uploadHandler(user, e.target.files[0]);
+          }
         }}
-      >
-        Upload
-      </button>
+      />
     );
   }
 }

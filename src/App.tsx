@@ -1,77 +1,60 @@
-import { useEffect, useState } from 'react';
-import { backend, createActor } from './declarations/backend';
+
 import './App.css';
-import { authenticate } from './lib/authenticate';
-import { signin } from './lib/signin';
-import { ActorSubclass, HttpAgent } from '@dfinity/agent';
-import { _SERVICE } from './declarations/backend/backend.did';
-import { signout } from './lib/signout';
 
+import React, { createContext, useEffect, useState } from 'react';
+
+import { authenticate, signin, signout } from './lib/util/authenticate';
 import Upload from './components/Upload';
-import { State } from './lib/types';
+import { User } from './lib/structs/User';
+import { Gallery } from './components/Gallery';
 
-const signInFn = async (
-  setActor: React.Dispatch<React.SetStateAction<ReturnType<typeof createActor>>>,
-  setState: React.Dispatch<React.SetStateAction<State>>,
-  setAgent: React.Dispatch<React.SetStateAction<HttpAgent | null>>,
-  active: boolean
-) => {
-  const [agent, actor] = (await authenticate()) ?? [null, null];
+const signInFn = async (setUser: React.Dispatch<React.SetStateAction<User | null>>, active: boolean) => {
+  const user = (await authenticate()) ?? null;
+  setUser(user);
 
-  if (agent && actor) {
-    setAgent(agent);
-    setActor(actor);
-    setState('authenticated');
-  } else if (active) {
-    setState('loading');
+  if (!user && active) {
     await signin();
-    signInFn(setActor, setState, setAgent, false);
-  } else {
-    setState('unauthenticated');
+    signInFn(setUser, false);
   }
 };
 
-const signOutButtonClick = async (
-  setActor: React.Dispatch<React.SetStateAction<ActorSubclass<_SERVICE>>>,
-  setState: React.Dispatch<React.SetStateAction<State>>
-) => {
+const signOutButtonClick = async (setUser: React.Dispatch<React.SetStateAction<User | null>>) => {
   await signout();
-  setActor(backend);
-  setState('unauthenticated');
+  setUser(null);
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
+export const UserContext = createContext<User | null>(null);
+
 function App() {
-  const [state, setState] = useState('loading' as State);
-  const [actor, setActor] = useState(backend);
-  const [agent, setAgent] = useState(null as HttpAgent | null);
+  const [user, setUser] = useState(null as User | null);
 
   useEffect(() => {
-    signInFn(setActor, setState, setAgent, false);
+    signInFn(setUser, false);
   }, []);
+
+  if (!user) return <p>Loading...</p>;
 
   return (
     <>
-      {state === 'loading' || state === 'unauthenticated' ? (
-        <button
-          onClick={() => {
-            signInFn(setActor, setState, setAgent, true);
-          }}
-        >
-          Sign in
-        </button>
+      {user.state === 'unauthenticated' ? (
+        <button onClick={() => signInFn(setUser, true)}>Sign in</button>
       ) : (
         <button
           onClick={() => {
-            signOutButtonClick(setActor, setState);
+            signOutButtonClick(setUser);
           }}
         >
           Sign out
         </button>
       )}
-      <p>State: {state}</p>
-      <p>Actor: {JSON.stringify(actor) || 'None'}</p>
-      <p>Agent: {JSON.stringify(agent) || 'None'}</p>
-      <Upload curstate={state} agent={agent} />
+      <UserContext.Provider value={user}>
+        <p>State: {user.state}</p>
+        <p>Actor: {JSON.stringify(user.actor) || 'None'}</p>
+        <p>Agent: {JSON.stringify(user.agent) || 'None'}</p>
+        <Upload />
+        <Gallery />
+      </UserContext.Provider>
     </>
   );
 }
