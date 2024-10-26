@@ -6,10 +6,10 @@
   "scripts": {
     "format": "prettier --write .",
     "dev": "vite",
-    "tw:build": "tailwindcss -i ./src/main.css -o ./src/index.css",
-    "build": "npm run tw:build && tsc -b && vite build",
+    "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "init": "dfx start --clean --background",
     "redeploy": "npm run build && dfx deploy"
   },
   "dependencies": {

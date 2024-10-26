@@ -1,13 +1,9 @@
-import './App.css';
-
 import React, { createContext, useEffect, useState } from 'react';
 
 import { authenticate, signin, signout } from './lib/util/authenticate';
 import Upload from './components/Upload';
 import { User } from './lib/structs/User';
 import { Gallery } from './components/Gallery';
-
-import { Button } from '../components/ui/button';
 
 const signInFn = async (setUser: React.Dispatch<React.SetStateAction<User | null>>, active: boolean) => {
   const user = (await authenticate()) ?? null;
@@ -36,16 +32,16 @@ function App() {
 
   return (
     <>
-      {!user || user.state === 'unauthenticated' ? (
-        <Button onClick={() => signInFn(setUser, true)}>Sign in</Button>
+      {(!user || user.state === 'unauthenticated') ? (
+        <button onClick={() => signInFn(setUser, true)}>Sign in</button>
       ) : (
-        <Button
+        <button
           onClick={() => {
             signOutButtonClick(setUser);
           }}
         >
           Sign out
-        </Button>
+        </button>
       )}
       {user && user.state === 'authenticated' && (
         <UserContext.Provider value={user}>
