@@ -3,21 +3,16 @@ import type { ActorMethod } from '@dfinity/agent';
 import type { IDL } from '@dfinity/candid';
 
 export interface Artist {
-  'photoKeys' : Set,
+  'photoKeys' : Array<string>,
   'alias' : string,
   'walletAddr' : string,
 }
-export type AssocList = [] | [[[Key, null], List]];
-export interface Branch { 'left' : Trie, 'size' : bigint, 'right' : Trie }
 export interface GPS { 'latitude' : number, 'longitude' : number }
-export type Hash = number;
-export interface Key { 'key' : string, 'hash' : Hash }
-export interface Leaf { 'size' : bigint, 'keyvals' : AssocList }
-export type List = [] | [[[Key, null], List]];
 export interface Main {
   'addArtist' : ActorMethod<[string, string, string], boolean>,
-  'addLike' : ActorMethod<[string, string], boolean>,
+  'addLike' : ActorMethod<[string, string], undefined>,
   'addMetadata' : ActorMethod<[string, string, GPS, Time], boolean>,
+  'getAllMetadata' : ActorMethod<[[] | [Time], [] | [Time]], Array<Metadata>>,
   'getAllMetadataByArtist' : ActorMethod<[string], Array<Metadata>>,
   'getArtist' : ActorMethod<[string], [] | [Artist]>,
   'getMetadata' : ActorMethod<[string], [] | [Metadata]>,
@@ -25,16 +20,11 @@ export interface Main {
 export interface Metadata {
   'gps' : GPS,
   'time' : Time,
-  'likersPrincipalID' : Set,
+  'photoKey' : string,
+  'likersPrincipalID' : Array<string>,
   'principalID' : string,
 }
-export type Set = { 'branch' : Branch } |
-  { 'leaf' : Leaf } |
-  { 'empty' : null };
 export type Time = bigint;
-export type Trie = { 'branch' : Branch } |
-  { 'leaf' : Leaf } |
-  { 'empty' : null };
 export interface _SERVICE extends Main {}
 export declare const idlFactory: IDL.InterfaceFactory;
 export declare const init: (args: { IDL: typeof IDL }) => IDL.Type[];

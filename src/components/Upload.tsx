@@ -5,7 +5,7 @@ import { useContext } from 'react';
 import { UserContext } from '../App';
 import { User } from '../lib/structs/User';
 
-const uploadHandler = async (user: User, file: File) => {
+const uploadHandler = async (user: User, files: File[]) => {
   // Request GPS
   let [latitude, longitude] = [0, 0];
   if (navigator.geolocation) {
@@ -14,13 +14,17 @@ const uploadHandler = async (user: User, file: File) => {
       longitude = position.coords.longitude;
     });
   }
-  const result = await upload(user, file);
+  const result = await upload(user, files);
   const keys = result.map((item) => item.key);
-  for (const key of keys) {
-    user.actor?.addMetadata(user.principalId, key, { latitude, longitude }, BigInt(Date.now()));
-  }
 
-  window.location.reload();
+  const promises = [] as (Promise<boolean> | undefined)[];
+  for (const key of keys) {
+    promises.push(user.actor?.addMetadata(user.principalId, key, { latitude, longitude }, BigInt(Date.now())));
+  }
+  const out = await Promise.all(promises);
+  console.log(out);
+
+  // window.location.reload();
 };
 
 export default function Upload() {
@@ -37,9 +41,7 @@ export default function Upload() {
           multiple
           onChange={(e) => {
             if (e.target.files && e.target.files.length > 0) {
-              for (let i = 0; i < e.target.files.length; i++) {
-                uploadHandler(user, e.target.files[i]);
-              }
+              uploadHandler(user, Array.from(e.target.files));
             }
           }}
         />

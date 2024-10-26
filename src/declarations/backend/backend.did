@@ -1,74 +1,31 @@
-type Trie = 
- variant {
-   branch: Branch;
-   "empty";
-   leaf: Leaf;
- };
 type Time = int;
-type Set = 
- variant {
-   branch: Branch;
-   "empty";
-   leaf: Leaf;
- };
 type Metadata = 
  record {
    gps: GPS;
-   likersPrincipalID: Set;
+   likersPrincipalID: vec text;
+   photoKey: text;
    principalID: text;
    time: Time;
  };
 type Main = 
  service {
    addArtist: (text, text, text) -> (bool);
-   addLike: (text, text) -> (bool);
+   addLike: (text, text) -> ();
    addMetadata: (text, text, GPS, Time) -> (bool);
+   getAllMetadata: (opt Time, opt Time) -> (vec Metadata) query;
    getAllMetadataByArtist: (text) -> (vec Metadata);
    getArtist: (text) -> (opt Artist) query;
    getMetadata: (text) -> (opt Metadata) query;
  };
-type List = 
- opt record {
-       record {
-         Key;
-         null;
-       };
-       List;
-     };
-type Leaf = 
- record {
-   keyvals: AssocList;
-   size: nat;
- };
-type Key = 
- record {
-   hash: Hash;
-   key: text;
- };
-type Hash = nat32;
 type GPS = 
  record {
    latitude: float64;
    longitude: float64;
  };
-type Branch = 
- record {
-   left: Trie;
-   right: Trie;
-   size: nat;
- };
-type AssocList = 
- opt record {
-       record {
-         Key;
-         null;
-       };
-       List;
-     };
 type Artist = 
  record {
    alias: text;
-   photoKeys: Set;
+   photoKeys: vec text;
    walletAddr: text;
  };
 service : () -> Main
