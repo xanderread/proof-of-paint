@@ -10,7 +10,8 @@ const signInButtonClick = async (
   setActor: React.Dispatch<React.SetStateAction<ActorSubclass<_SERVICE>>>,
   setState: React.Dispatch<React.SetStateAction<State>>
 ) => {
-  await signin();
+  const out = await signin();
+  console.log('Sign in attempt: ', out);
   const actor = await authenticate();
 
   if (actor) {
@@ -25,9 +26,6 @@ function App() {
 
   return (
     <>
-      <p>State: {state}</p>
-      <p>Actor: {actor?.toString() || 'None'}</p>
-
       <button
         onClick={() => {
           signInButtonClick(setActor, setState);
@@ -35,6 +33,8 @@ function App() {
       >
         Sign in
       </button>
+      <p>State: {state}</p>
+      <p>Actor: {actor?.toString() || 'None'}</p>
     </>
   );
 }

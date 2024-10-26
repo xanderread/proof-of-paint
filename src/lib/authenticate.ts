@@ -7,8 +7,12 @@ export const authenticate = async () => {
   const state = (await authClient.isAuthenticated()) ? 'authenticated' : 'unauthenticated';
   if (state === 'authenticated') {
     const identity = authClient.getIdentity();
+    console.log('Authenticated as: ', identity.getPrincipal().toText());
     const agent = await HttpAgent.create({ identity });
-    const actor = createActor(canisterId, { agent });
+    console.log('Agent: ', agent);
+    console.log('Canister ID: ', canisterId, process.env);
+    const actor = createActor('bd3sg-teaaa-aaaaa-qaaba-cai', { agent });
+    console.log('Actor: ', actor);
     return actor;
   }
 };
