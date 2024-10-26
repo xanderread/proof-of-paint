@@ -60,7 +60,10 @@ The app is built on ICP ♾️, taking advantage of the low-cost, massive storag
 
 <details>
 <summary><strong>Team</strong></summary>
-// Add content here
+
+- Alex: https://www.linkedin.com/in/alexmarcelread/
+- Ted: https://www.linkedin.com/in/ted-pilcher-7334301a4/
+- Sankarsh: https://www.linkedin.com/in/sankarshm/
 </details>
 
 
