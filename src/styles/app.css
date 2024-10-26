@@ -6,13 +6,14 @@
 .buttons {
   float: right;
   display: flex;
+  margin: 0.5rem;
 }
 
 .debug {
   background-color: rgba(1, 1, 1, 0.05);
   color: var(--text-color);
   margin: 2rem;
-  margin-top: 3.5rem;
+  margin-top: 4.5rem;
   padding: 0.25rem 0.5rem;
   font-family: monospace;
 }
@@ -26,7 +27,7 @@
   color: var(--background-color);
 
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.75rem;
   margin: 0.5rem;
   font-size: 1rem;
   cursor: pointer;

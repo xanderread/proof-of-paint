@@ -1,14 +1,19 @@
 .upload-btn-container {
-    display: flex;
+  /* display: flex;
     justify-content: center;
     align-items: center;
-    margin: 1rem 0;
+    margin: 1rem 0; */
+
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
 }
 
 .upload-btn {
   display: inline-block;
-  font-size: 1.4rem;
-  padding: 10px;
+  font-size: 1.5rem;
+  width: 3rem;
+  height: 3rem;
 
   background-color: var(--text-color);
   color: var(--background-color);
@@ -16,5 +21,8 @@
   border: none;
 
   text-align: center;
-  cursor: pointer;
+}
+
+.upload-btn * {
+    vertical-align: middle;
 }

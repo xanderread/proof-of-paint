@@ -14,3 +14,12 @@ body {
   background-color: var(--background-color);
   color: var(--text-color);
 }
+
+button {
+  cursor: pointer;
+  transition: transform 150ms;
+}
+
+button:hover {
+  transform: scale(1.1);
+}

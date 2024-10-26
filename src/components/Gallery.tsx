@@ -26,14 +26,11 @@ export function Gallery() {
   }, 200);
 
   return (
-    <div className='container'>
+    <div className="container">
       {assets.map((asset) => (
-      <img
-        key={asset.key}
-        src={asset.key}
-        alt={asset.key}
-        className='gallery-image'
-      />
+        <div className='img-container'>
+          <img key={asset.key} src={asset.key} alt={asset.key} className="gallery-image" />
+        </div>
       ))}
     </div>
   );

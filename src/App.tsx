@@ -11,7 +11,7 @@ const signInFn = async (setUser: React.Dispatch<React.SetStateAction<User>>, act
   const user = (await authenticate()) ?? new User(null, null);
   setUser(user);
 
-  if (!user && active) {
+  if (!user.actor && active) {
     await signin();
     signInFn(setUser, false);
   }

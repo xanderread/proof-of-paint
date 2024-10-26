@@ -16,7 +16,7 @@ export default function Upload() {
 
   if (user && user.state === 'authenticated') {
     return (
-      <div className='upload-btn-container'>
+      <div className="upload-btn-container">
         <input
           type="file"
           accept="image/*"
@@ -32,8 +32,10 @@ export default function Upload() {
           }}
         />
         <label htmlFor="file-upload">
-          <button type="button" className='upload-btn' onClick={() => document.getElementById('file-upload')?.click()}>
-            Upload Image
+          <button type="button" className="upload-btn" onClick={() => document.getElementById('file-upload')?.click()}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M9 16h6v-6h4l-7-7l-7 7h4zm-4 2h14v2H5z" />
+            </svg>
           </button>
         </label>
       </div>
