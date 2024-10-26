@@ -50,7 +50,12 @@ actor class Main() {
                         };
                         metadataStorage.put(photoKey, metadata);
                         
-                        // TODO: add photoKey into artist.photoKeys and update artist in storage
+                        let updatedArtist = {
+                            alias = artist.alias;
+                            walletAddr = artist.walletAddr;
+                            photoKeys = Array.append(artist.photoKeys, [photoKey]);
+                        };
+                        artistStorage.put(principalID, updatedArtist);
                         
                         true
                     };
@@ -67,7 +72,23 @@ actor class Main() {
         metadataStorage.get(photoKey)
     };
 
-    // TODO: getAllMetadata (optionalTimeframe)
+    public query func getAllMetadata(optionalStartTime: ?Time.Time, optionalEndTime: ?Time.Time): async [Metadata] {
+        var metadataArr: [Metadata] = [];
+        for ((_, metadata) in metadataStorage.entries()) {
+            let startTimeCheck = switch optionalStartTime {
+                case (?startTime) metadata.time >= startTime;
+                case null true;
+            };
+            let endTimeCheck = switch optionalEndTime {
+                case (?endTime) metadata.time <= endTime;
+                case null true;
+            };
+            if (startTimeCheck and endTimeCheck) {
+                metadataArr := Array.append(metadataArr, [metadata]);
+            };
+        };
+        metadataArr
+    };
 
     public func getAllMetadataByArtist(principalID: Text): async [Metadata] {
         switch (artistStorage.get(principalID)) {
@@ -115,14 +136,18 @@ actor class Main() {
         switch (artistStorage.get(principalID)) {
             case (?_artist) {
                 switch(metadataStorage.get(photoKey)){
-                    case(?metadata) {
-                        
+                    case(?metadata) {        
                         for (likerPrincipalID in metadata.likersPrincipalID.vals()){
                             if (likerPrincipalID == principalID)
                             {return;}
                         };                  
-                        
-                        // TODO: add principalID to metadata.likersPrincipalID and update metadata
+                        let updatedMetadata = {
+                            principalID = metadata.principalID;
+                            gps = metadata.gps;
+                            time = metadata.time;
+                            likersPrincipalID = Array.append(metadata.likersPrincipalID, [principalID]);
+                        };
+                        metadataStorage.put(photoKey, updatedMetadata);
                     };
                     case null{};
                 };
