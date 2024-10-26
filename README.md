@@ -8,9 +8,6 @@ A decentralized graffiti log where artists upload photos and locations of their 
 npm install
 dfx generate
 npm run build
-```
-
-```bash
 dfx start --clean --background
 dfx deploy
 ```
