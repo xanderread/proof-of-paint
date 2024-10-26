@@ -2,7 +2,7 @@ import { HttpAgent } from '@dfinity/agent';
 import { upload } from '../lib/api/upload';
 import { State } from '../lib/types';
 
-export default function Upload(curstate: State, agent: HttpAgent) {
+export default function Upload({curstate, agent}: {curstate: State, agent: HttpAgent | null}) {
   if (curstate === 'authenticated' && agent) {
     return (
       <button

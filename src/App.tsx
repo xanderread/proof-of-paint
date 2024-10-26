@@ -71,7 +71,7 @@ function App() {
       <p>State: {state}</p>
       <p>Actor: {JSON.stringify(actor) || 'None'}</p>
       <p>Agent: {JSON.stringify(agent) || 'None'}</p>
-      <Upload state={state} agent={agent} />
+      <Upload curstate={state} agent={agent} />
     </>
   );
 }
