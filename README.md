@@ -1,5 +1,5 @@
 
-![proofofpaymentlogo](https://github.com/user-attachments/assets/e1b63115-96e6-414c-977e-aaffb99ead25)
+![proofofpaymentlogo](https://github.com/user-attachments/assets/0284c992-607e-470e-b47c-a3a2d31bd765)
 
 > Claim, protect, and get rewarded for your street art 👾
 
