@@ -1,5 +1,16 @@
 # proof-of-paint
 
+
+
+![paint](https://github.com/user-attachments/assets/e77fe509-405f-4d98-8642-bcc127bc1d6f)
+
+
+
+
+
+
+
+THIS WILL BE DELETED ON SUBMISSION:
 A decentralized street art gallery where artists upload photos and locations of their work to claim ownership and receive blockchain-based payments.
 
 ![alig-ali-g](https://github.com/user-attachments/assets/8a16fa2b-0712-4e1e-845a-d867491e61fe)
