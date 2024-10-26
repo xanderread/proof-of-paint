@@ -1,83 +1,56 @@
 # proof-of-paint
- A decentralized graffiti log where artists upload photos and locations of their work to claim ownership and receive blockchain-based payments.
 
- 
+A decentralized graffiti log where artists upload photos and locations of their work to claim ownership and receive blockchain-based payments.
 
 ![alig-ali-g](https://github.com/user-attachments/assets/8a16fa2b-0712-4e1e-845a-d867491e61fe)
 
----
-keywords: [photo storage, store photos, photo app, photos, beginner]
----
+# React + TypeScript + Vite
 
-# Photo storage example
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-[View this sample's code on GitHub](https://github.com/dfinity/examples/tree/master/hosting/photo-storage)
+Currently, two official plugins are available:
 
-The example shows how to store photos on ICP in an asset canister with the `@dfinity/assets` package. The photo
-storage app is deployed as a frontend in an asset canister which is also used for photo upload.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-This example project can be cloned, installed, and deployed locally, for learning and testing purposes. The instructions
-are based on running the example on either macOS or Linux, but when using WSL2 on Windows, the instructions will be the
-same.
+## Expanding the ESLint configuration
 
-## Prerequisites
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-This example requires an installation of:
+- Configure the top-level `parserOptions` property like this:
 
-- [x] Install the [IC SDK](https://internetcomputer.org/docs/current/developer-docs/setup/install/).
-
-- [x] Download and install [git](https://git-scm.com/downloads).
-
-- [x] Download and install [Node.js](https://nodejs.org/en).
-
-## Install
-
-Clone the example dapp project:
-
-```bash
-git clone https://github.com/dfinity/examples
-cd examples/hosting/photo-storage
+```js
+export default tseslint.config({
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+});
 ```
 
-## React build
+- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
+- Optionally add `...tseslint.configs.stylisticTypeChecked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
 
-The React frontend is built by running:
+```js
+// eslint.config.js
+import react from 'eslint-plugin-react';
 
-```bash
-npm install
-npm run build
+export default tseslint.config({
+  // Set the react version
+  settings: { react: { version: '18.3' } },
+  plugins: {
+    // Add the react plugin
+    react,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended rules
+    ...react.configs.recommended.rules,
+    ...react.configs['jsx-runtime'].rules,
+  },
+});
 ```
-
-## Deployment
-
-The local replica is started by running:
-
-```bash
-dfx start --clean --background
-```
-
-When the local replica is up and running, run this command to deploy the canisters:
-
-```bash
-dfx deploy
-```
-
-## Authorization
-
-To authorize an identity to upload files, it must be authorized first:
-
-```bash
-dfx canister call photo-storage authorize '(principal "535yc-uxytb-gfk7h-tny7p-vjkoe-i4krp-3qmcl-uqfgr-cpgej-yqtjq-rqe")'
-```
-
-Before deployment on ICP, the hardcoded identity (defined in `src/App.js`) should be replaced by an authentication
-method such as Internet Identity.
-
-## Example photos
-
-The example cat stock photos are from [Pexels](https://www.pexels.com/license/).
-
-## License
-
-This project is licensed under the Apache 2.0 license, see `LICENSE.md` for details. See `CONTRIBUTE.md` for details about
-how to contribute to this project. 

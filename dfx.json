@@ -4,9 +4,7 @@
       "frontend": {
         "entrypoint": "build/index.html"
       },
-      "source": [
-        "build"
-      ],
+      "source": ["build"],
       "type": "assets"
     }
   },
