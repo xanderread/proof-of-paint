@@ -7,7 +7,7 @@ Thousands of talented street artists go unrecognized, have their work removed pe
 
 ### What we built
 
-We built a <u>decentralised</u> street art gallery where artists can <u>anonymously</u> upload photos of their work and location to the chain. They can then claim ownership and receive blockchain-based payments. This:
+We built a <u>decentralised</u> street art gallery where artists can be authed <u>anonymously</u> and choose aliases. They can upload photos of their work and location to the chain, claim ownership and receive blockchain-based payments as tips from the public. This:
 
 1. Protects artists from copycats
 2. Gives street artists a platform to showcase their work and get paid
@@ -19,20 +19,18 @@ We built a <u>decentralised</u> street art gallery where artists can <u>anonymou
 
 ### FAQ
 
-**Surely this exists already?**
-
-We looked and looked but couldn't find anything that addresses our problem with street art.
-
-NFTs don’t solve this problem because:
-
-- People want to tip the artist directly not buy an NFT.
-- Charity wallets could be linked to artist aliases, supporting artwork targeting charity and political causes.
-- Artists would benefit directly if their work gains popularity online.
 
 
+<details>
+<summary><strong>Surely this exists already?</strong></summary>
+We looked and looked... 👀 but couldn't find anything that addresses our issues with street art.
 
+<b>Why NFTs don't solve this problem</b>
+- We want to support the artists of the cool street art we walk past everyday...not buy an NFT.
+- We want to find the art and culture around us.
+- Thousands of NFT street art collections have wrongly been created and sold without the artist's permission, [as seen with Banksy's work](https://www.bbc.co.uk/news/technology-58399338#:~:text=Banksy's%20team%20told%20the%20BBC,actual%20artwork%20or%20its%20copyright.), leading to a lack of trust in the NFT market.
 
-.
+</details>
 
 **Bounties chased**
 
