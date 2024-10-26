@@ -1,0 +1,6 @@
+type Main = 
+ service {
+   greet: (text) -> (text) query;
+   whoAmI: () -> (principal) query;
+ };
+service : (record {phrase: text;}) -> Main

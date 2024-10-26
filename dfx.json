@@ -6,7 +6,12 @@
       },
       "source": ["build"],
       "type": "assets"
-    }
+    },
+		"backend": {
+			"type": "motoko",
+			"main": "backend/main.mo",
+			"init_arg": "(record { phrase = \"moin\"})"
+		}
   },
   "defaults": {
     "build": {
