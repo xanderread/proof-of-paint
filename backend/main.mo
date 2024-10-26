@@ -12,7 +12,7 @@ actor class Main(initArgs : { phrase : Text }) {
 	
 	// Not sure what this is for?
 	stable var metadataEntries : [(Text, PhotoUploadMetadata)] = [];
-
+	stable var voteEntries : [(Text, VoteUpload)] = [];
 
 	public query func greet(name : Text) : async Text {
 		return initArgs.phrase # ", " # name # "!";
@@ -45,11 +45,14 @@ actor class Main(initArgs : { phrase : Text }) {
 	// Not sure what these are/for?
 	system func preupgrade() {
 		metadataEntries := Iter.toArray(metadataStorage.entries());
+		voteEntries := Iter.toArray(voteStorage.entries());
 	};
 
 	system func postupgrade() {
-		metadataStorage := HashMap.fromIter<Text, PhotoUploadMetadata>(metadataEntries.vals(), 10, Text.equal, Text.hash);
+		metadataStorage := HashMap.fromIter<Text, PhotoUploadMetadata>(metadataEntries.vals(), initialSize, Text.equal, Text.hash);
+		voteStorage := HashMap.fromIter<Text, VoteUpload>(voteEntries.vals(), initialSize, Text.equal, Text.hash);
 		metadataEntries := [];
+		voteEntries := [];
 	};
 
 	// Add metadata for a new photo
