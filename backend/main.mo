@@ -4,6 +4,7 @@ import Time "mo:base/Time";
 import Iter "mo:base/Iter";
 import Bool "mo:base/Bool";
 import Array "mo:base/Array";
+import Int "mo:base/Int";
 
 actor class Main() {
 
@@ -81,6 +82,18 @@ actor class Main() {
         };        
     };
 
+    // Modify the existing function to optionally limit the number of entries
+    public query func getAllPhotoMetaData(limit : ?Nat) : async [PhotoUploadMetadata] {
+        let allMetadata = Iter.toArray(metadataStorage.vals());
+        switch (limit) {
+            case (null) { allMetadata };
+            case (?n) {
+                let start = Int.abs(Int.max(0, allMetadata.size() - n));
+                Array.subArray(allMetadata, start, n);
+            };
+        };
+    };
+
     public func addMetadata(photoKey : Text, artistAlias: Text, walletAddress : Text, gps : GPS, date : Time.Time) : async Bool {
         
         // will add artist if doesn't currently exist
@@ -123,5 +136,14 @@ actor class Main() {
             };
         };
     };
-};
 
+    public query func searchByArtist(artistAlias: Text): async[Text] {
+
+        switch (artistStorage.get(artistAlias)) {
+            case (?artist) {
+                artist.photos
+            };
+            case null {[]};
+        };
+    };
+};
