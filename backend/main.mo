@@ -157,6 +157,34 @@ actor class Main() {
             case null {};
         };
     };
+
+    public func removeLike(principalID: Text, photoKey: Text): async() {
+        switch (artistStorage.get(principalID)) {
+            case (?_artist) {
+                switch(metadataStorage.get(photoKey)){
+                    case(?metadata) {        
+                        var newLikersPrincialID: [Text] = [];
+                        for (likerPrincipalID in metadata.likersPrincipalID.vals()){
+                            if (likerPrincipalID != principalID){
+
+                                newLikersPrincialID := Array.append(newLikersPrincialID, [likerPrincipalID]);
+                            }
+                        };                  
+                        let updatedMetadata = {
+                            photoKey = metadata.photoKey;
+                            principalID = metadata.principalID;
+                            gps = metadata.gps;
+                            time = metadata.time;
+                            likersPrincipalID = newLikersPrincialID;
+                        };
+                        metadataStorage.put(photoKey, updatedMetadata);
+                    };
+                    case null{};
+                };
+            };
+            case null {};
+        };
+    };
     
 
     system func preupgrade() {
