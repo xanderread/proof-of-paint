@@ -5,6 +5,8 @@ import { authenticate } from './lib/authenticate';
 import { signin } from './lib/signin';
 import { ActorSubclass } from '@dfinity/agent';
 import { _SERVICE } from './declarations/backend/backend.did';
+import { greet } from './lib/greet';
+import { signout } from './lib/signout';
 
 const signInButtonClick = async (
   setActor: React.Dispatch<React.SetStateAction<ActorSubclass<_SERVICE>>>,
@@ -15,6 +17,7 @@ const signInButtonClick = async (
   const actor = await authenticate();
 
   if (actor) {
+    console.log('Authenticated as', await greet(actor, 'Hello'));
     setActor(actor);
     setState('authenticated');
   }
@@ -26,15 +29,19 @@ function App() {
 
   return (
     <>
-      <button
-        onClick={() => {
-          signInButtonClick(setActor, setState);
-        }}
-      >
-        Sign in
-      </button>
+      {state === 'loading' || state === 'unauthenticated' ? (
+        <button
+          onClick={() => {
+            signInButtonClick(setActor, setState);
+          }}
+        >
+          Sign in
+        </button>
+      ) : (
+        <button onClick={signout}>Sign out</button>
+      )}
       <p>State: {state}</p>
-      <p>Actor: {actor?.toString() || 'None'}</p>
+      <p>Actor: {JSON.stringify(actor) || 'None'}</p>
     </>
   );
 }
