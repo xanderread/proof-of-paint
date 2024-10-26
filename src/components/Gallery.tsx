@@ -1,3 +1,5 @@
+import '../styles/gallery.css';
+
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../App';
 import { User } from '../lib/structs/User';
@@ -12,15 +14,26 @@ export function Gallery() {
   const user = useContext(UserContext);
   const [assets, setAssets] = useState([] as Awaited<ReturnType<AssetManager['list']>>);
 
+  const [date, setDate] = useState(new Date());
+
   useEffect(() => {
-    if (!user || user.state !== 'authenticated') return;
+    if (!user) return;
     fetcher(user).then(setAssets);
-  }, [user]);
+  }, [user, date]);
+
+  setInterval(() => {
+    setDate(new Date());
+  }, 200);
 
   return (
-    <div>
+    <div className='container'>
       {assets.map((asset) => (
-        <img key={asset.key} src={asset.key} alt={asset.key} />
+      <img
+        key={asset.key}
+        src={asset.key}
+        alt={asset.key}
+        className='gallery-image'
+      />
       ))}
     </div>
   );

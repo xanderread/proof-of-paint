@@ -14,7 +14,7 @@ export const authenticate = async () => {
     return new User(agent, actor);
   }
 
-  return null;
+  return new User(null, null);
 };
 
 export const signin = async () => {

@@ -1,0 +1,32 @@
+.container {
+  list-style: none;
+  column-gap: 0;
+  padding: 0;
+  column-count: 1;
+  margin: 1rem 8%;
+}
+
+.gallery-image {
+  width: 100%;
+  padding: 0 0.125rem;
+  margin: 0;
+  box-sizing: border-box;
+  break-inside: avoid;
+}
+
+@media (min-width: 320px) and (max-width: 979.5px) {
+  .container {
+    column-count: 2;
+    margin: 1rem 0;
+  }
+}
+@media (min-width: 980px) and (max-width: 1023.5px) {
+  .container {
+    margin: 1rem 5%;
+  }
+}
+@media (min-width: 1024px) {
+  .container {
+    column-count: 3;
+  }
+}
