@@ -10,7 +10,6 @@ actor class Main(initArgs : { phrase : Text }) {
 	var metadataStorage = HashMap.HashMap<Text, PhotoUploadMetadata>(initialSize, Text.equal, Text.hash);
 	var voteStorage = HashMap.HashMap<Text, VoteUpload>(initialSize, Text.equal, Text.hash);
 	
-	// Not sure what this is for?
 	stable var metadataEntries : [(Text, PhotoUploadMetadata)] = [];
 	stable var voteEntries : [(Text, VoteUpload)] = [];
 
@@ -41,8 +40,6 @@ actor class Main(initArgs : { phrase : Text }) {
 		date : Time.Time;
 	};
 
-
-	// Not sure what these are/for?
 	system func preupgrade() {
 		metadataEntries := Iter.toArray(metadataStorage.entries());
 		voteEntries := Iter.toArray(voteStorage.entries());
@@ -67,6 +64,7 @@ actor class Main(initArgs : { phrase : Text }) {
 		metadataStorage.get(photoKey)
 	};
 
+	
 	// key will need to be generated in FE, looks hard to do in Mokoto
 	public query func addVote(voteKey: Text, photoKey: Text, isUp: Bool) : async () {
 		let vote = {photoKey; isUp};
