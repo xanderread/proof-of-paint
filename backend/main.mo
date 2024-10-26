@@ -19,6 +19,7 @@ actor class Main() {
 
     // Linked to Artist via principalID
     type Metadata = {
+        photoKey: Text;
         principalID: Text;
         gps: GPS;
         time: Time.Time;
@@ -142,6 +143,7 @@ actor class Main() {
                             {return;}
                         };                  
                         let updatedMetadata = {
+                            photoKey = metadata.photoKey;
                             principalID = metadata.principalID;
                             gps = metadata.gps;
                             time = metadata.time;
