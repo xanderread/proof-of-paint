@@ -5,15 +5,20 @@ import Iter "mo:base/Iter";
 import Bool "mo:base/Bool";
 
 actor class Main(initArgs : { phrase : Text }) {
+
+	var initialSize = 1000;
+	var metadataStorage = HashMap.HashMap<Text, PhotoUploadMetadata>(initialSize, Text.equal, Text.hash);
+	var voteStorage = HashMap.HashMap<Text, VoteUpload>(initialSize, Text.equal, Text.hash);
+
+	// Not sure what this is for?
+	stable var metadataEntries : [(Text, PhotoUploadMetadata)] = [];
+
+
 	public query func greet(name : Text) : async Text {
 		return initArgs.phrase # ", " # name # "!";
 	};
 
-	// public query ({ caller }) func whoAmI() : async Principal {
-	// 	return caller;
-	// };
-
-	// use single vote for both Up and down
+	// single vote for both Up/Like and down/dislike
 	type VoteUpload = {
 		photoKey: Text;
 		isUp: Bool;
@@ -38,12 +43,8 @@ actor class Main(initArgs : { phrase : Text }) {
 		// assetLink : Text; 
 	};
 
-	stable var metadataEntries : [(Text, PhotoUploadMetadata)] = [];
 
-	var initialSize = 1000;
-	var metadataStorage = HashMap.HashMap<Text, PhotoUploadMetadata>(initialSize, Text.equal, Text.hash);
-	var voteStorage = HashMap.HashMap<Text, VoteUpload>(initialSize, Text.equal, Text.hash);
-
+	// Not sure what these are/for?
 	system func preupgrade() {
 		metadataEntries := Iter.toArray(metadataStorage.entries());
 	};
@@ -54,7 +55,7 @@ actor class Main(initArgs : { phrase : Text }) {
 	};
 
 	// Add metadata for a new photo
-	// can just use same key for both photo and metadata
+	// Can just use same key for both photo and metadata
 	public func addMetadata(photoKey : Text, artist : ArtistDetails, gps : GPS, date : Time.Time, assetLink : Text) : async () {
 		let metadata = {artist; gps; date; assetLink };
 		metadataStorage.put(photoKey, metadata);
@@ -65,16 +66,13 @@ actor class Main(initArgs : { phrase : Text }) {
 		metadataStorage.get(photoKey)
 	};
 
-	// Retrieve all metadata entries
-	// public query func listAllMetadata() : async [PhotoUploadMetadata] {
-	// 	Iter.toArray(metadataStorage.vals())
-	// };
-
+	// key will need to be generated in FE, looks hard to do in Mokoto
 	public query func addVote(voteKey: Text, photoKey: Text, isUp: Bool) : async () {
 		let vote = {photoKey; isUp};
 		voteStorage.put(voteKey, vote);
 	};
 
+	// Gets all votes by photoKey, sorted into (NumUpvotes, NumDownvotes)
 	public query func getAllStortedVotes(photoKey: Text) : async (Nat, Nat) {
 		let votes = Iter.toArray(Iter.filter(voteStorage.vals(), func (vote: VoteUpload) : Bool {
         	vote.photoKey == photoKey
