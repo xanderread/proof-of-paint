@@ -34,7 +34,7 @@ actor class Main() {
         gps : GPS;
         time : Time.Time;
         photoKey: Text;
-		likes: Nat;
+        likes: Nat;
     };
 
     // stable variable to keep track of the insertion order
@@ -133,16 +133,17 @@ actor class Main() {
     };
 
     // key will need to be generated in FE, looks hard to do in Mokoto
-	public func likePhoto(photoKey: Text) : async () {
-		switch (metadataStorage.get(photoKey)) {
-			case (null) { /* Do nothing if photo doesn't exist */ };
-			case (?metadata) {
-				let updatedMetadata = {
-					metadata with
-					likes = metadata.likes + 1
-				};
-				metadataStorage.put(photoKey, updatedMetadata);
-			};
-		};
-	};
+    public func likePhoto(photoKey: Text) : async () {
+        switch (metadataStorage.get(photoKey)) {
+            case (null) { /* Do nothing if photo doesn't exist */ };
+            case (?metadata) {
+                let updatedMetadata = {
+                    metadata with
+                    likes = metadata.likes + 1
+                };
+                metadataStorage.put(photoKey, updatedMetadata);
+            };
+        };
+    };
 };
+
