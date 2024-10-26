@@ -76,7 +76,10 @@ actor class Main(initArgs : { phrase : Text }) {
 	};
 
 	public query func getAllStortedVotes(photoKey: Text) : async (Nat, Nat) {
-		let votes = Iter.toArray(voteStorage.vals());
+		let votes = Iter.toArray(Iter.filter(voteStorage.vals(), func (vote: VoteUpload) : Bool {
+        	vote.photoKey == photoKey
+    	}));
+
 		var upvotes = 0;
 		var downvotes = 0;
 		
