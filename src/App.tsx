@@ -23,6 +23,15 @@ const signInButtonClick = async (
   }
 };
 
+const signOutButtonClick = async (
+  setActor: React.Dispatch<React.SetStateAction<ActorSubclass<_SERVICE>>>,
+  setState: React.Dispatch<React.SetStateAction<State>>
+) => {
+  await signout();
+  setActor(backend);
+  setState('unauthenticated');
+};
+
 function App() {
   const [state, setState] = useState('loading' as State);
   const [actor, setActor] = useState(backend);
@@ -38,7 +47,13 @@ function App() {
           Sign in
         </button>
       ) : (
-        <button onClick={signout}>Sign out</button>
+        <button
+          onClick={() => {
+            signOutButtonClick(setActor, setState);
+          }}
+        >
+          Sign out
+        </button>
       )}
       <p>State: {state}</p>
       <p>Actor: {JSON.stringify(actor) || 'None'}</p>
