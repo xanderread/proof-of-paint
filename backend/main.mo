@@ -9,7 +9,7 @@ actor class Main(initArgs : { phrase : Text }) {
 	var initialSize = 1000;
 	var metadataStorage = HashMap.HashMap<Text, PhotoUploadMetadata>(initialSize, Text.equal, Text.hash);
 	var voteStorage = HashMap.HashMap<Text, VoteUpload>(initialSize, Text.equal, Text.hash);
-
+	
 	// Not sure what this is for?
 	stable var metadataEntries : [(Text, PhotoUploadMetadata)] = [];
 
@@ -36,11 +36,9 @@ actor class Main(initArgs : { phrase : Text }) {
 
 	// Metadata to go alongside a streetart photo
 	type PhotoUploadMetadata = {
-		// photoKey : Text;
 		artist: ArtistDetails;
 		gps : GPS;
 		date : Time.Time;
-		// assetLink : Text; 
 	};
 
 
@@ -57,7 +55,7 @@ actor class Main(initArgs : { phrase : Text }) {
 	// Add metadata for a new photo
 	// Can just use same key for both photo and metadata
 	public func addMetadata(photoKey : Text, artist : ArtistDetails, gps : GPS, date : Time.Time, assetLink : Text) : async () {
-		let metadata = {artist; gps; date; assetLink };
+		let metadata = {photoKey; artist; gps; date; assetLink };
 		metadataStorage.put(photoKey, metadata);
 	};
 
