@@ -1,12 +1,10 @@
 {
   "canisters": {
-    "photo-storage": {
-      "frontend": {
-        "entrypoint": "build/index.html"
-      },
-      "source": ["build"],
-      "type": "assets"
-    },
+		"frontend": {
+			"dependencies": ["backend"],
+			"type": "assets",
+			"source": ["dist/"]
+		},
 		"backend": {
 			"type": "motoko",
 			"main": "backend/main.mo",

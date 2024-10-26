@@ -7,8 +7,8 @@ import { authenticate } from './lib/authenticate';
 import { greet } from './lib/greet';
 
 function App() {
-  const [greeted, setGreeted] = useState<string | null>(null);
-  const [actor, setActor] = useState(backend);
+  const [_greeted, setGreeted] = useState<string | null>(null);
+  const [_actor, setActor] = useState(backend);
 
   authenticate().then((actor) => {
     if (actor) {
@@ -31,7 +31,6 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
