@@ -1,6 +1,7 @@
 import HashMap "mo:base/HashMap";
 import Text "mo:base/Text";
-// import Time "mo:base/Time";
+import Time "mo:base/Time";
+import Iter "mo:base/Iter";
 
 actor class Main(initArgs : { phrase : Text }) {
 	public query func greet(name : Text) : async Text {
@@ -11,40 +12,54 @@ actor class Main(initArgs : { phrase : Text }) {
 		return caller;
 	};
 
-  // Define a record type to store metadata for each streetart photo
-//   type PhotoMetadata = {
-//     id: Text;
-//     name: Text;
-//     gpsCoordinates: Text;
-//     uploadDate: Time;
-//   };
 
-//   stable var metadataEntries : [(Text, PhotoMetadata)] = [];
-//   var metadataStorage = HashMap.HashMap<Text, PhotoMetadata>(10, Text.equal, Text.hash);
+	type GPS = {
+		latitude : Float;
+		longitude : Float;
+	};
 
-//   system func preupgrade() {
-//     metadataEntries := Iter.toArray(metadataStorage.entries());
-//   };
 
-//   system func postupgrade() {
-//     metadataStorage := HashMap.fromIter<Text, PhotoMetadata>(metadataEntries.vals(), 10, Text.equal, Text.hash);
-//     metadataEntries := [];
-//   };
+	type ArtistDetails = {
+		alias : Text;
+		walletAddress : Text;
+	};
 
-//   // Add metadata for a new photo
-//   public func addMetadata(id: Text, name: Text, gpsCoordinates: Text, uploadDate: Time) : async () {
-//     let metadata = { id = id; name = name; gpsCoordinates = gpsCoordinates; uploadDate = uploadDate };
-//     metadataStorage.put(id, metadata);
-//   };
+	// Metadata to go alongside a streetart photo
+	type PhotoUploadMetadata = {
+		id : Text;
+		artist: ArtistDetails;
+		gps : GPS;
+		date : Time.Time;
+		assetLink : Text;
+	};
 
-//   // Retrieve metadata by photo ID
-//   public func getMetadata(id: Text) : async ?PhotoMetadata {
-//     metadataStorage.get(id);
-//   };
+	stable var metadataEntries : [(Text, PhotoUploadMetadata)] = [];
 
-//   // Retrieve all metadata entries
-//   public func listAllMetadata() : async [PhotoMetadata] {
-//     metadataStorage.values();
-//   };
+	var initialSize = 1000;
+	var metadataStorage = HashMap.HashMap<Text, PhotoUploadMetadata>(initialSize, Text.equal, Text.hash);
 
+	system func preupgrade() {
+		metadataEntries := Iter.toArray(metadataStorage.entries());
+	};
+
+	system func postupgrade() {
+		metadataStorage := HashMap.fromIter<Text, PhotoUploadMetadata>(metadataEntries.vals(), 10, Text.equal, Text.hash);
+		metadataEntries := [];
+	};
+
+	// Add metadata for a new photo
+	public func addMetadata(id : Text, artist : ArtistDetails, gps : GPS, date : Time.Time, assetLink : Text) : async () {
+		let metadata = { id; artist; gps; date; assetLink };
+		metadataStorage.put(id, metadata);
+	};
+
+	// Retrieve metadata by photo ID
+	public query func getMetadata(id : Text) : async ?PhotoUploadMetadata {
+		metadataStorage.get(id)
+	};
+
+	// Retrieve all metadata entries
+	public query func listAllMetadata() : async [PhotoUploadMetadata] {
+		Iter.toArray(metadataStorage.vals())
+	};
 };

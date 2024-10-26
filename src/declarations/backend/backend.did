@@ -1,6 +1,28 @@
+type Time = int;
+type PhotoUploadMetadata = 
+ record {
+   artist: ArtistDetails;
+   assetLink: text;
+   date: Time;
+   gps: GPS;
+   id: text;
+ };
 type Main = 
  service {
+   addMetadata: (text, ArtistDetails, GPS, Time, text) -> ();
+   getMetadata: (text) -> (opt PhotoUploadMetadata) query;
    greet: (text) -> (text) query;
+   listAllMetadata: () -> (vec PhotoUploadMetadata) query;
    whoAmI: () -> (principal) query;
+ };
+type GPS = 
+ record {
+   latitude: float64;
+   longitude: float64;
+ };
+type ArtistDetails = 
+ record {
+   alias: text;
+   walletAddress: text;
  };
 service : (record {phrase: text;}) -> Main
