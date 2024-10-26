@@ -13,6 +13,12 @@ export class User {
   public alias: string;
   public walletAddress: string;
 
+  private _principalId: string;
+
+  get principalId(): string {
+    return this._principalId;
+  }
+
   constructor(agent: HttpAgent | null, actor: ActorSubclass<_SERVICE> | null) {
     this.actor = actor;
     this.agent = agent;
@@ -28,6 +34,9 @@ export class User {
     this.isSetup = false;
     this.alias = '';
     this.walletAddress = '';
+
+    this._principalId = '';
+    this.getPrincipalId();
   }
 
   public async setup(alias: string, walletAddress: string): Promise<void> {
@@ -46,6 +55,16 @@ export class User {
       });
       this.agent.fetchRootKey();
       this.assetManager = new AssetManager({ canisterId: 'bd3sg-teaaa-aaaaa-qaaba-cai', agent: this.agent });
+      await this.getPrincipalId();
     }
   };
+
+  private async getPrincipalId(): Promise<string> {
+    const principal = await this.agent?.getPrincipal();
+    const id = principal?.toText() ?? '';
+
+    if (id.length && !this._principalId) this._principalId = id;
+    
+    return this._principalId;
+  }
 }

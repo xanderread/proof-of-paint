@@ -6,9 +6,21 @@ import { UserContext } from '../App';
 import { User } from '../lib/structs/User';
 
 const uploadHandler = async (user: User, file: File) => {
+  // Request GPS
+  let [latitude, longitude] = [0, 0];
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      latitude = position.coords.latitude;
+      longitude = position.coords.longitude;
+    });
+  }
   const result = await upload(user, file);
   const keys = result.map((item) => item.key);
-  return keys;
+  for (const key of keys) {
+    user.actor?.addMetadata(user.principalId, key, { latitude, longitude }, BigInt(Date.now()));
+  }
+
+  window.location.reload();
 };
 
 export default function Upload() {

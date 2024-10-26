@@ -16,11 +16,22 @@
 }
 
 .img-container {
+  position: relative;
   width: 100%;
   padding: 0 0.125rem;
   margin: 0;
   box-sizing: border-box;
   break-inside: avoid;
+}
+
+.like-button {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.8);
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
 }
 
 @media (min-width: 320px) and (max-width: 979.5px) {
