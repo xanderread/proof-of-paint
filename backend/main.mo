@@ -93,6 +93,21 @@ actor class Main() {
         };
     };
 
+    public func dislikePhoto(photoKey: Text) : async () {
+        switch (metadataStorage.get(photoKey)) {
+            case (null) { /* Do nothing if photo doesn't exist */ };
+            case (?metadata) {                
+                if (metadata.likes > 0) {
+                    let updatedMetadata = {
+                        metadata with
+                        likes = metadata.likes + 1
+                    };
+                    metadataStorage.put(photoKey, updatedMetadata);
+                };                
+            };
+        };
+    };
+
     // Artist
     var artistStorage = HashMap.HashMap<Text, Artist>(initialSize, Text.equal, Text.hash);
     stable var artistEntries: [(Text, Artist)] = [];
