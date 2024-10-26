@@ -6,6 +6,7 @@ import Bool "mo:base/Bool";
 import Array "mo:base/Array";
 import Int "mo:base/Int";
 
+
 actor class Main() {
 
     var initialSize = 1000;
@@ -27,7 +28,7 @@ actor class Main() {
     type PhotoUploadMetadata = {
         artist: ArtistDetails;
         gps : GPS;
-        date : Time.Time;
+        time : Time.Time;
         photoKey: Text;
 		likes: Nat;
     };
@@ -44,14 +45,14 @@ actor class Main() {
         metadataEntries := [];
     };
 
-    public func addMetadata(photoKey : Text, artist : ArtistDetails, gps : GPS, date : Time.Time) : async Bool {
+    public func addMetadata(photoKey : Text, artist : ArtistDetails, gps : GPS, time : Time.Time) : async Bool {
         switch (metadataStorage.get(photoKey)) {
             case (null) {
                 // Image doesn't exist, add it
                 let metadata = {
                     artist;
                     gps;
-                    date;
+                    time;
                     photoKey;
                     likes = 0;
                 };
@@ -86,7 +87,7 @@ actor class Main() {
     };
 
     // key will need to be generated in FE, looks hard to do in Mokoto
-	public func like(photoKey: Text) : async () {
+	public func likePhoto(photoKey: Text) : async () {
 		switch (metadataStorage.get(photoKey)) {
 			case (null) { /* Do nothing if photo doesn't exist */ };
 			case (?metadata) {
@@ -98,6 +99,4 @@ actor class Main() {
 			};
 		};
 	};
-
-
 };
