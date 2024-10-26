@@ -11,22 +11,26 @@ actor class Main() {
 
     var initialSize = 1000;
     var metadataStorage = HashMap.HashMap<Text, PhotoUploadMetadata>(initialSize, Text.equal, Text.hash);
-    
+    var artistStorage = HashMap.HashMap<Text, Artist>(initialSize, Text.equal, Text.hash);
+
     stable var metadataEntries : [(Text, PhotoUploadMetadata)] = [];
+    stable var artistEntries: [(Text, Artist)] = [];
 
     type GPS = {
         latitude : Float;
         longitude : Float;
     };
 
-    type ArtistDetails = {
-        alias : Text;
+    // alias will be hashed key
+    type Artist = {
+        // alias : Text;
         walletAddress : Text;
+        photos: [Text]; // list of metadata/photo keys
     };
 
     // Metadata to go alongside a streetart photo
     type PhotoUploadMetadata = {
-        artist: ArtistDetails;
+        artistAlias: Text;
         gps : GPS;
         time : Time.Time;
         photoKey: Text;
@@ -38,26 +42,68 @@ actor class Main() {
 
     system func preupgrade() {
         metadataEntries := Iter.toArray(metadataStorage.entries());
+        artistEntries := Iter.toArray(artistStorage.entries());
     };
 
     system func postupgrade() {
         metadataStorage := HashMap.fromIter<Text, PhotoUploadMetadata>(metadataEntries.vals(), initialSize, Text.equal, Text.hash);
         metadataEntries := [];
+        artistStorage := HashMap.fromIter<Text, Artist>(artistEntries.vals(), initialSize, Text.equal, Text.hash);
+        artistEntries := [];
     };
 
-    public func addMetadata(photoKey : Text, artist : ArtistDetails, gps : GPS, time : Time.Time) : async Bool {
+    // doesn't need to public as will be called when photo metadata added
+    func addArtist(artistAlias: Text, walletAddress : Text) : async () {
+
+        switch (artistStorage.get(artistAlias)) {
+            case (null) {
+                // artist doesn't exist, hence can add it
+                let artist = {
+                    walletAddress;
+                    photos = [];
+                };
+                artistStorage.put(artistAlias, artist);
+            };
+
+            case (_artistExists) {}
+        }
+    };
+
+    func artistAddPhoto(photoKey: Text, artistAlias: Text) : async () {
+
+            switch (artistStorage.get(artistAlias)) {
+            case (?artist) {
+                let updatedArtist = {
+                    artist with
+                    photos = Array.append(artist.photos, [photoKey]);
+                };
+                artistStorage.put(artistAlias, updatedArtist);
+            };
+            case null {};
+        };        
+    };
+
+    public func addMetadata(photoKey : Text, artistAlias: Text, walletAddress : Text, gps : GPS, date : Time.Time) : async Bool {
+        
+        // will add artist if doesn't currently exist
+        await addArtist(artistAlias, walletAddress);
+        
         switch (metadataStorage.get(photoKey)) {
             case (null) {
                 // Image doesn't exist, add it
                 let metadata = {
-                    artist;
+                    artistAlias;
                     gps;
-                    time;
+                    time=date;
                     photoKey;
                     likes = 0;
                 };
                 metadataStorage.put(photoKey, metadata);
                 metadataInsertionOrder := Array.append(metadataInsertionOrder, [photoKey]);
+
+                // append photo key to artist photos list
+                await artistAddPhoto(artistAlias, photoKey);
+            
                 true // Return true to indicate successful addition
             };
             case (_imageExists) {
