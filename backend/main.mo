@@ -66,7 +66,7 @@ actor class Main() {
 	};
 
 	// Modify the existing function to optionally limit the number of entries
-	public func getAllPhotoMetaData(limit : ?Nat) : async [PhotoUploadMetadata] {
+	public query func getAllPhotoMetaData(limit : ?Nat) : async [PhotoUploadMetadata] {
 		let allMetadata = Iter.toArray(metadataStorage.vals());
 		switch (limit) {
 			case (null) { allMetadata };
@@ -78,7 +78,7 @@ actor class Main() {
 	};
 
 	// Add a new function to get the last X entries
-	public func getRecentPhotoMetadata(count : Nat) : async [PhotoUploadMetadata] {
+	public query func getRecentPhotoMetadata(count : Nat) : async [PhotoUploadMetadata] {
 		let start = Int.abs(Int.max(0, metadataInsertionOrder.size() - count));
 		let recentKeys = Array.subArray(metadataInsertionOrder, start, count);
 		Array.mapFilter(recentKeys, func (key : Text) : ?PhotoUploadMetadata {
@@ -92,7 +92,7 @@ actor class Main() {
 	};
 
 	// key will need to be generated in FE, looks hard to do in Mokoto
-	public query func addVote(voteKey: Text, photoKey: Text, isUp: Bool) : async () {
+	public func addVote(voteKey: Text, photoKey: Text, isUp: Bool) : async () {
 		let vote = {photoKey; isUp};
 		voteStorage.put(voteKey, vote);
 	};
