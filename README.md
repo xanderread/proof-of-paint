@@ -6,8 +6,10 @@ A decentralized graffiti log where artists upload photos and locations of their 
 
 ```bash
 npm install
-dfx generate
 npm run build
 dfx start --clean --background
+dfx deploy
+dfx generate
+npm run build
 dfx deploy
 ```
