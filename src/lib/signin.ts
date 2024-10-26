@@ -25,7 +25,6 @@ export const signin = async (prompt = false) => {
   let delegation: any;
   if (exists) {
     delegation = JSON.parse(exists);
-    console.log('Delegation exists', delegation);
   } else if (prompt) {
     const success = await authenticateWithII();
     delegation = success.delegations[0];
