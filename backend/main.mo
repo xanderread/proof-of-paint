@@ -39,7 +39,6 @@ actor class Main() {
 
     // stable variable to keep track of the insertion order
     stable var metadataInsertionOrder : [Text] = [];
-    stable var artistInsertionOrder: [Text] = [];
 
     system func preupgrade() {
         metadataEntries := Iter.toArray(metadataStorage.entries());
