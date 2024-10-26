@@ -22,7 +22,7 @@ function App() {
   return (
     <>
       <p>State: {state}</p>
-      <p>Actor: {actor.toString()}</p>
+      <p>Actor: {actor?.toString() || 'None'}</p>
       <p>Greeted: {greeted}</p>  
     </>
   );
