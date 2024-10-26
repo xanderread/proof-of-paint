@@ -1,4 +1,5 @@
-## Proof of Paint
+
+![proofofpaymentlogo](https://github.com/user-attachments/assets/e1b63115-96e6-414c-977e-aaffb99ead25)
 
 > Claim, protect, and get rewarded for your street art 👾
 
