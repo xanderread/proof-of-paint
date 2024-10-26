@@ -6,7 +6,9 @@ import { signin } from './lib/signin';
 import { ActorSubclass, HttpAgent } from '@dfinity/agent';
 import { _SERVICE } from './declarations/backend/backend.did';
 import { signout } from './lib/signout';
-import { upload } from './lib/api/upload';
+
+import Upload from './components/Upload';
+import { State } from './lib/types';
 
 const signInFn = async (
   setActor: React.Dispatch<React.SetStateAction<ReturnType<typeof createActor>>>,
@@ -69,16 +71,7 @@ function App() {
       <p>State: {state}</p>
       <p>Actor: {JSON.stringify(actor) || 'None'}</p>
       <p>Agent: {JSON.stringify(agent) || 'None'}</p>
-      {state === 'authenticated' && agent && (
-        <button
-          onClick={async () => {
-            const result = await upload(agent, new File(['hello'], 'hello.txt'));
-            console.log('Upload result:', result);
-          }}
-        >
-          Upload
-        </button>
-      )}
+      <Upload state={state} agent={agent} />
     </>
   );
 }
