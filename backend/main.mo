@@ -3,6 +3,8 @@ import Text "mo:base/Text";
 import Time "mo:base/Time";
 import Iter "mo:base/Iter";
 import Bool "mo:base/Bool";
+import Array "mo:base/Array";
+import Int "mo:base/Int";
 
 actor class Main() {
 
@@ -34,7 +36,11 @@ actor class Main() {
 		artist: ArtistDetails;
 		gps : GPS;
 		date : Time.Time;
+		photoKey: Text;
 	};
+
+	// stable variable to keep track of the insertion order
+	stable var metadataInsertionOrder : [Text] = [];
 
 	system func preupgrade() {
 		metadataEntries := Iter.toArray(metadataStorage.entries());
@@ -48,15 +54,36 @@ actor class Main() {
 		voteEntries := [];
 	};
 
-	// Add metadata for a new photo
-	// Can just use same key for both photo and metadata
-	public func addMetadata(photoKey : Text, artist : ArtistDetails, gps : GPS, date : Time.Time, assetLink : Text) : async () {
-		let metadata = {photoKey; artist; gps; date; assetLink };
+	public func addMetadata(photoKey : Text, artist : ArtistDetails, gps : GPS, date : Time.Time) : async () {
+		let metadata = {
+			artist;
+			gps;
+			date;
+			photoKey;
+		};
 		metadataStorage.put(photoKey, metadata);
+		metadataInsertionOrder := Array.append(metadataInsertionOrder, [photoKey]);
 	};
 
-	public func getAllPhotoKeys(): async[Text] {
-		Iter.toArray(metadataStorage.keys())
+	// Modify the existing function to optionally limit the number of entries
+	public func getAllPhotoMetaData(limit : ?Nat) : async [PhotoUploadMetadata] {
+		let allMetadata = Iter.toArray(metadataStorage.vals());
+		switch (limit) {
+			case (null) { allMetadata };
+			case (?n) {
+				let start = Int.abs(Int.max(0, allMetadata.size() - n));
+				Array.subArray(allMetadata, start, n);
+			};
+		};
+	};
+
+	// Add a new function to get the last X entries
+	public func getRecentPhotoMetadata(count : Nat) : async [PhotoUploadMetadata] {
+		let start = Int.abs(Int.max(0, metadataInsertionOrder.size() - count));
+		let recentKeys = Array.subArray(metadataInsertionOrder, start, count);
+		Array.mapFilter(recentKeys, func (key : Text) : ?PhotoUploadMetadata {
+			metadataStorage.get(key)
+		});
 	};
 
 	// Retrieve metadata by photo ID
