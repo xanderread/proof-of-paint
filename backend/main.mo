@@ -73,6 +73,8 @@ actor class Main() {
         metadataStorage.get(photoKey)
     };
 
+    
+
     public query func getAllMetadata(optionalStartTime: ?Time.Time, optionalEndTime: ?Time.Time): async [Metadata] {
         var metadataArr: [Metadata] = [];
         for ((_, metadata) in metadataStorage.entries()) {
