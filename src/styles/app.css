@@ -37,8 +37,9 @@
 .debug {
   background-color: rgba(1, 1, 1, 0.05);
   color: var(--text-color);
-  margin: 2rem;
+  margin: 5%;
   margin-top: 2rem;
+  margin-bottom: 2rem;
   padding: 0.25rem 0.5rem;
   font-family: monospace;
 }

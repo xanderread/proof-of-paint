@@ -15,6 +15,10 @@ body {
   color: var(--text-color);
 }
 
+button {
+  font-family: 'Roboto Condensed', sans-serif !important;
+}
+
 button:not(:disabled) {
   cursor: pointer;
   transition: transform 150ms;

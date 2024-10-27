@@ -69,7 +69,12 @@ export function Gallery() {
               >
                 🗺️ Open in maps
               </a>
-              <p>{metadataMap.get(asset.key)!.alias} | {new Date(parseInt((metadataMap.get(asset.key)?.time ?? 0n).toString())).toLocaleDateString()}</p>
+              <p>
+                <a href={`https://etherscan.io/address/${metadataMap.get(asset.key)!.walletAddr}`} target="_blank">
+                  {metadataMap.get(asset.key)!.alias}
+                </a>{' '}
+                | {new Date(parseInt((metadataMap.get(asset.key)?.time ?? 0n).toString())).toLocaleDateString()}
+              </p>
             </div>
           )}
         </div>

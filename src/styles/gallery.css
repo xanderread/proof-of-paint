@@ -73,6 +73,7 @@
 }
 @media (min-width: 980px) and (max-width: 1023.5px) {
   .container {
+    column-count: 3;
     margin: 1rem 3.5%;
   }
 }
