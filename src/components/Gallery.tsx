@@ -7,7 +7,7 @@ import { AssetManager } from '@dfinity/assets';
 import { Metadata } from '../declarations/backend/backend.did';
 
 const metadataFetcher = async (user: User) => {
-  const metadata = (await user.actor?.getMetadata(user.principalId)) ?? [];
+  const metadata = (await user.actor?.getAllMetadata([], [])) ?? [];
   return metadata;
 };
 
@@ -35,31 +35,43 @@ export function Gallery() {
       metadataFetcher(user).then((metadata) => {
         const metadataMap = new Map<string, Metadata>();
         metadata.forEach((item) => metadataMap.set(item.photoKey.toString(), item));
-        console.log('mp', metadataMap);
         setMetadataMap(metadataMap);
       });
     }
   }, [user, date]);
 
+  const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
   setInterval(() => {
     setDate(new Date());
-  }, 60_000);
+  }, 30_000);
 
   return (
     <div className="container">
       {assets.map((asset) => (
         <div className="img-container">
           <img key={asset.key} src={asset.key} alt={asset.key} className="gallery-image" />
-          <button className="like-button" disabled={user.state !== 'authenticated'} onClick={() => like(user, asset.key)}>
+          <button
+            className="like-button"
+            disabled={user.state !== 'authenticated'}
+            onClick={async () => {
+              await like(user, asset.key);
+              await wait(1000);
+              setDate(new Date());
+            }}
+          >
             <span role="img" aria-label="like">
               ❤️ {metadataMap.get(asset.key)?.likersPrincipalID.length}
             </span>
           </button>
           {metadataMap.get(asset.key) && (
             <div className="metadata">
-              <a href={`https://www.google.com/maps/search/?api=1&query=${metadataMap.get(asset.key)?.gps.latitude},${metadataMap.get(asset.key)?.gps.longitude}`}>Open in maps</a>
-              <p>{(new Date(metadataMap.get(asset.key)?.time.toString() || Date.now())).toLocaleDateString()}</p>
-              <p>{metadataMap.get(asset.key)!.alias}</p>
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${metadataMap.get(asset.key)?.gps.latitude},${metadataMap.get(asset.key)?.gps.longitude}`}
+              >
+                📍 Open in maps
+              </a>
+              <p>{metadataMap.get(asset.key)!.alias} | {new Date(parseInt((metadataMap.get(asset.key)?.time ?? 0n).toString())).toLocaleDateString()}</p>
             </div>
           )}
         </div>

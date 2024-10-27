@@ -32,6 +32,27 @@
   border: none;
   padding: 0.5rem;
   cursor: pointer;
+  color: white;
+}
+
+.metadata {
+  position: absolute;
+  bottom: 0.25rem;
+  right: 0.16rem;
+  text-align: right;
+  padding: 0.125rem 0.25rem;
+  background-color: rgba(0, 0, 0, 0.76);
+  color: white;
+}
+
+.metadata * {
+  margin: 0.125rem;
+  font-size: 0.75rem;
+}
+
+.metadata a {
+  color: white;
+  text-decoration: none;
 }
 
 @media (min-width: 320px) and (max-width: 979.5px) {
