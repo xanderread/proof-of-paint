@@ -24,6 +24,8 @@ actor class Main() {
         gps: GPS;
         time: Time.Time;
         likersPrincipalID: [Text];
+        alias: Text;
+        walletAddr: Text;
     };
     type GPS = {
         latitude : Float;
@@ -48,6 +50,8 @@ actor class Main() {
                             time;
                             photoKey;
                             likersPrincipalID = [];
+                            alias = artist.alias;
+                            walletAddr = artist.walletAddr;
                         };
                         metadataStorage.put(photoKey, metadata);
                         
@@ -73,7 +77,7 @@ actor class Main() {
         metadataStorage.get(photoKey)
     };
 
-    
+    // public query func g
 
     public query func getAllMetadata(optionalStartTime: ?Time.Time, optionalEndTime: ?Time.Time): async [Metadata] {
         var metadataArr: [Metadata] = [];
@@ -145,6 +149,8 @@ actor class Main() {
                             {return;}
                         };                  
                         let updatedMetadata = {
+                            walletAddr = metadata.walletAddr;
+                            alias = metadata.alias;
                             photoKey = metadata.photoKey;
                             principalID = metadata.principalID;
                             gps = metadata.gps;
@@ -173,6 +179,8 @@ actor class Main() {
                             }
                         };                  
                         let updatedMetadata = {
+                            walletAddr = metadata.walletAddr;
+                            alias = metadata.alias;
                             photoKey = metadata.photoKey;
                             principalID = metadata.principalID;
                             gps = metadata.gps;
