@@ -11,7 +11,10 @@ const metadataFetcher = async (user: User) => {
   return metadata;
 };
 
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 const assetFetcher = async (user: User) => {
+  if (user.state !== 'authenticated') await wait(2000);
   const assets = (await user.assetManager?.list()) ?? [];
   return assets.filter((asset) => asset.key.startsWith('/uploads/'));
 };
