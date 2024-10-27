@@ -24,7 +24,7 @@ The app is built on ICP ♾️, taking advantage of the low-cost, massive storag
 
 ### Demo 
 
--- Use the nice video app to make the demo
+watch the demo here! - https://youtu.be/hVF4wKM0Wtw
 
 ### FAQ
 
