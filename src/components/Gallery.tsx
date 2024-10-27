@@ -17,7 +17,7 @@ const assetFetcher = async (user: User) => {
 };
 
 const like = async (user: User, key: string) => {
-  user.actor?.addLike(user.principalId, key);
+  await user.actor?.addLike(user.principalId, key);
 };
 
 export function Gallery() {
@@ -40,8 +40,6 @@ export function Gallery() {
     }
   }, [user, date]);
 
-  const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
   setInterval(() => {
     setDate(new Date());
   }, 30_000);
@@ -56,7 +54,6 @@ export function Gallery() {
             disabled={user.state !== 'authenticated'}
             onClick={async () => {
               await like(user, asset.key);
-              await wait(1000);
               setDate(new Date());
             }}
           >
