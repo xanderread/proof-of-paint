@@ -28,6 +28,7 @@ const uploadHandler = async (user: User, files: File[]) => {
 
 const invokeModal = () => {
   const modal = document.getElementById('modal');
+  console.log(modal);
   if (modal) {
     modal.style.display = 'block';
   }

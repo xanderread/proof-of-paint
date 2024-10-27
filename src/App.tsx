@@ -6,6 +6,7 @@ import { authenticate, signin, signout } from './lib/util/authenticate';
 import Upload from './components/Upload';
 import { User } from './lib/structs/User';
 import { Gallery } from './components/Gallery';
+import SetupArtistModal from './components/SetupArtist';
 
 const signInFn = async (setUser: React.Dispatch<React.SetStateAction<User>>, active: boolean) => {
   const user = (await authenticate()) ?? new User(null, null);
@@ -70,6 +71,7 @@ function App() {
         )}
         {user.state === 'authenticated' && <Upload />}
         <Gallery />
+        <SetupArtistModal />
       </UserContext.Provider>
     </>
   );

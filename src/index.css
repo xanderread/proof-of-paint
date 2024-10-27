@@ -15,11 +15,11 @@ body {
   color: var(--text-color);
 }
 
-button {
+button:not(:disabled) {
   cursor: pointer;
   transition: transform 150ms;
 }
 
-button:hover {
+button:hover:not(:disabled) {
   transform: scale(1.1);
 }

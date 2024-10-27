@@ -50,7 +50,7 @@ export function Gallery() {
       {assets.map((asset) => (
         <div className="img-container">
           <img key={asset.key} src={asset.key} alt={asset.key} className="gallery-image" />
-          <button className="like-button" onClick={() => like(user, asset.key)}>
+          <button className="like-button" disabled={user.state !== 'authenticated'} onClick={() => like(user, asset.key)}>
             <span role="img" aria-label="like">
               ❤️ {metadataMap.get(asset.key)?.likersPrincipalID.length}
             </span>
