@@ -1,5 +1,5 @@
 
-- Hackathon project for [encode london ](https://www.encode.club/encodelondon-24)
+Hackathon project for [encode london ](https://www.encode.club/encodelondon-24)
 
 ![proofofpaintlogowbg](https://github.com/user-attachments/assets/9eb799be-9d75-46cb-9737-0f98035994cc)
 
