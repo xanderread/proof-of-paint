@@ -21,11 +21,17 @@ const uploadHandler = async (user: User, files: File[]) => {
   for (const key of keys) {
     promises.push(user.actor?.addMetadata(user.principalId, key, { latitude, longitude }, BigInt(Date.now())));
   }
-  const out = await Promise.all(promises);
-  console.log(out);
+  await Promise.all(promises);
 
-  // window.location.reload();
+  window.location.reload();
 };
+
+const invokeModal = () => {
+  const modal = document.getElementById('modal');
+  if (modal) {
+    modal.style.display = 'block';
+  }
+}
 
 export default function Upload() {
   const user = useContext(UserContext);
@@ -46,7 +52,14 @@ export default function Upload() {
           }}
         />
         <label htmlFor="file-upload">
-          <button type="button" className="upload-btn" onClick={() => document.getElementById('file-upload')?.click()}>
+          <button
+            type="button"
+            className="upload-btn"
+            onClick={() => {
+              if (user.isSetup) document.getElementById('file-upload')?.click();
+              else invokeModal();
+            }}
+          >
             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
               <path fill="currentColor" d="M9 16h6v-6h4l-7-7l-7 7h4zm-4 2h14v2H5z" />
             </svg>

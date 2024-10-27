@@ -10,13 +10,20 @@ export class User {
   public state: 'loading' | 'authenticated' | 'unauthenticated';
   public isSetup: boolean;
 
-  public alias: string;
-  public walletAddress: string;
-
   private _principalId: string;
+  private _artistAlias: string;
+  private _artistWalletAddress: string;
 
   get principalId(): string {
     return this._principalId;
+  }
+
+  get artistAlias(): string {
+    return this._artistAlias;
+  }
+
+  get artistWalletAddress(): string {
+    return this._artistWalletAddress;
   }
 
   constructor(agent: HttpAgent | null, actor: ActorSubclass<_SERVICE> | null) {
@@ -32,17 +39,14 @@ export class User {
     }
 
     this.isSetup = false;
-    this.alias = '';
-    this.walletAddress = '';
 
     this._principalId = '';
     this.getPrincipalId();
-  }
 
-  public async setup(alias: string, walletAddress: string): Promise<void> {
-    this.alias = alias;
-    this.walletAddress = walletAddress;
-    this.isSetup = true;
+    this._artistAlias = '';
+    this._artistWalletAddress = '';
+
+    this.setupArtistInfo();
   }
 
   private setupAgent = async () => {
@@ -64,7 +68,19 @@ export class User {
     const id = principal?.toText() ?? '';
 
     if (id.length && !this._principalId) this._principalId = id;
-    
+
     return this._principalId;
+  }
+
+  private async setupArtistInfo(): Promise<void> {
+    if (this.actor) {
+      await this.getPrincipalId();
+      const artist = await this.actor.getArtist(this._principalId);
+      if (artist.length) {
+        this._artistAlias = artist[0].alias;
+        this._artistWalletAddress = artist[0].walletAddr;
+        this.isSetup = true;
+      }
+    }
   }
 }
