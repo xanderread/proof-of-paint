@@ -57,7 +57,15 @@ The app is built on ICP ♾️, taking advantage of the low-cost, massive storag
 
 <details>
 <summary><strong>Running the project</strong></summary>
-// Add content here
+  <pre>
+    <code>
+npm install
+npm run build
+dfx start --clean --background
+dfx generate
+dfx deploy
+    </code>
+  </pre>
 </details>
 
 
