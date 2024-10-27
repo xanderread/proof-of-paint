@@ -1,8 +1,80 @@
 #modal {
-    width: calc(100vw - 5rem);
-    height: calc(100vh - 5rem);
-    position: fixed;
-    top: 2.5rem;
-    left: 2.5rem;
-    z-index: 100;
+  width: calc(100vw - 5rem);
+  height: calc(100vh - 5rem);
+  position: fixed;
+  top: 2.5rem;
+  left: 2.5rem;
+  z-index: 100;
+}
+
+/* Modal overlay */
+.modal-overlay {
+  display: flex;
+}
+
+/* Modal content box */
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+
+  border: 2px solid var(--text-color);
+
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Title style */
+.modal-title {
+  margin-top: 0;
+  font-size: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem 0;
+}
+
+.modal-body * {
+  display: block;
+  margin: 0.25rem 0;
+}
+
+.modal-body input {
+  font-size: 1.1rem;
+  padding: 0.5rem;
+  border: 1px solid var(--text-color);
+  width: 100%;
+}
+
+.modal-button-container {
+  display: flex;
+  justify-content: end;
+}
+
+.modal-button {
+  padding: 8px 16px;
+  margin-left: 8px;
+  font-size: 1em;
+  background-color: #000;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cancel-button {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border: 1px solid var(--text-color) !important;
+}
+
+.modal-close:hover {
+  background-color: #0056b3;
 }
