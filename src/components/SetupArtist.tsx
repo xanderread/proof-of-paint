@@ -12,6 +12,10 @@ export default function SetupArtistModal() {
     window.location.reload();
   };
 
+  const handleCancel = () => {
+    document.getElementById('modal')!.style.display = 'none';
+  };
+
   return (
     <div id="modal" className="modal" style={{ display: 'none' }}>
       <div className="modal-content">
@@ -31,7 +35,7 @@ export default function SetupArtistModal() {
         </label>
         <div>
           <button onClick={handleSave}>Save</button>
-          <button>Cancel</button>
+          <button onClick={handleCancel}>Cancel</button>
         </div>
       </div>
     </div>

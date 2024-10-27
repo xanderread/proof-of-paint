@@ -76,7 +76,7 @@ export class User {
     if (this.actor) {
       await this.getPrincipalId();
       const artist = await this.actor.getArtist(this._principalId);
-      if (artist.length) {
+      if (artist.length === 1) {
         this._artistAlias = artist[0].alias;
         this._artistWalletAddress = artist[0].walletAddr;
         this.isSetup = true;

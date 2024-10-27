@@ -21,9 +21,11 @@ const uploadHandler = async (user: User, files: File[]) => {
   for (const key of keys) {
     promises.push(user.actor?.addMetadata(user.principalId, key, { latitude, longitude }, BigInt(Date.now())));
   }
-  await Promise.all(promises);
+  const out = await Promise.all(promises);
 
-  window.location.reload();
+  console.log(out);
+
+  // window.location.reload();
 };
 
 const invokeModal = () => {

@@ -1,0 +1,8 @@
+#modal {
+    width: calc(100vw - 5rem);
+    height: calc(100vh - 5rem);
+    position: fixed;
+    top: 2.5rem;
+    left: 2.5rem;
+    z-index: 100;
+}
