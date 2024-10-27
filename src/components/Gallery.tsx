@@ -25,7 +25,7 @@ export function Gallery() {
   const [assets, setAssets] = useState([] as Awaited<ReturnType<AssetManager['list']>>);
   const [metadataMap, setMetadataMap] = useState(new Map<string, Metadata>());
 
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(Date.now());
 
   useEffect(() => {
     if (!user) return;
@@ -41,8 +41,8 @@ export function Gallery() {
   }, [user, date]);
 
   setInterval(() => {
-    setDate(new Date());
-  }, 60_000);
+    setDate(Date.now());
+  }, 30_000);
 
   return (
     <div className="container">
@@ -54,7 +54,7 @@ export function Gallery() {
             disabled={user.state !== 'authenticated'}
             onClick={async () => {
               await like(user, asset.key);
-              setDate(new Date());
+              setDate(Date.now());
             }}
           >
             <span role="img" aria-label="like">
@@ -72,7 +72,7 @@ export function Gallery() {
               <p>
                 <a href={`https://etherscan.io/address/${metadataMap.get(asset.key)!.walletAddr}`} target="_blank">
                   {metadataMap.get(asset.key)!.alias}
-                </a>{' '}
+                </a>
                 | {new Date(parseInt((metadataMap.get(asset.key)?.time ?? 0n).toString())).toLocaleDateString()}
               </p>
             </div>

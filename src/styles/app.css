@@ -35,6 +35,7 @@
 }
 
 .debug {
+  display: none;
   background-color: rgba(1, 1, 1, 0.05);
   color: var(--text-color);
   margin: 5%;
