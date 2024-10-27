@@ -42,7 +42,7 @@ export function Gallery() {
 
   setInterval(() => {
     setDate(new Date());
-  }, 30_000);
+  }, 60_000);
 
   return (
     <div className="container">
@@ -65,8 +65,9 @@ export function Gallery() {
             <div className="metadata">
               <a
                 href={`https://www.google.com/maps/search/?api=1&query=${metadataMap.get(asset.key)?.gps.latitude},${metadataMap.get(asset.key)?.gps.longitude}`}
+                target="_blank"
               >
-                📍 Open in maps
+                🗺️ Open in maps
               </a>
               <p>{metadataMap.get(asset.key)!.alias} | {new Date(parseInt((metadataMap.get(asset.key)?.time ?? 0n).toString())).toLocaleDateString()}</p>
             </div>

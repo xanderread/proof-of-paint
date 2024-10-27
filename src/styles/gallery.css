@@ -12,7 +12,7 @@
 }
 
 .gallery-image:hover {
-  filter: opacity(0.85) blur(1px);
+  filter: opacity(0.95);
 }
 
 .img-container {
@@ -33,6 +33,15 @@
   padding: 0.5rem;
   cursor: pointer;
   color: white;
+  transition: all 150ms;
+}
+
+.like-button span {
+  filter: grayscale(1);
+}
+
+.like-button:hover span {
+  filter: grayscale(0.8);
 }
 
 .metadata {
@@ -52,6 +61,7 @@
 
 .metadata a {
   color: white;
+  filter: grayscale(1);
   text-decoration: none;
 }
 
