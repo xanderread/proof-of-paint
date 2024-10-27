@@ -28,7 +28,7 @@
   position: absolute;
   bottom: 0.5rem;
   left: 0.5rem;
-  background-color: rgba(0, 0, 0, 0.76);
+  background-color: rgba(0, 0, 0, 0.8);
   border: none;
   padding: 0.5rem;
   cursor: pointer;
@@ -40,7 +40,7 @@
   filter: grayscale(1);
 }
 
-.like-button:hover span {
+.like-button:hover:not(:disabled) span {
   filter: grayscale(0.8);
 }
 
