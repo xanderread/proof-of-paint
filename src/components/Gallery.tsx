@@ -57,7 +57,9 @@ export function Gallery() {
           </button>
           {metadataMap.get(asset.key) && (
             <div className="metadata">
-              {metadataMap.get(asset.key)?.gps.latitude}, {metadataMap.get(asset.key)?.gps.longitude}
+              <a href={`https://www.google.com/maps/search/?api=1&query=${metadataMap.get(asset.key)?.gps.latitude},${metadataMap.get(asset.key)?.gps.longitude}`}>Open in maps</a>
+              <p>{(new Date(metadataMap.get(asset.key)?.time.toString() || Date.now())).toLocaleDateString()}</p>
+              <p>{metadataMap.get(asset.key)!.alias}</p>
             </div>
           )}
         </div>

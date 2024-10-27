@@ -1,11 +1,13 @@
 type Time = int;
 type Metadata = 
  record {
+   alias: text;
    gps: GPS;
    likersPrincipalID: vec text;
    photoKey: text;
    principalID: text;
    time: Time;
+   walletAddr: text;
  };
 type Main = 
  service {
@@ -16,6 +18,7 @@ type Main =
    getAllMetadataByArtist: (text) -> (vec Metadata);
    getArtist: (text) -> (opt Artist) query;
    getMetadata: (text) -> (opt Metadata) query;
+   removeLike: (text, text) -> ();
  };
 type GPS = 
  record {

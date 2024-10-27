@@ -16,10 +16,13 @@ export interface Main {
   'getAllMetadataByArtist' : ActorMethod<[string], Array<Metadata>>,
   'getArtist' : ActorMethod<[string], [] | [Artist]>,
   'getMetadata' : ActorMethod<[string], [] | [Metadata]>,
+  'removeLike' : ActorMethod<[string, string], undefined>,
 }
 export interface Metadata {
   'gps' : GPS,
+  'alias' : string,
   'time' : Time,
+  'walletAddr' : string,
   'photoKey' : string,
   'likersPrincipalID' : Array<string>,
   'principalID' : string,

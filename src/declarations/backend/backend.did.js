@@ -6,7 +6,9 @@ export const idlFactory = ({ IDL }) => {
   const Time = IDL.Int;
   const Metadata = IDL.Record({
     'gps' : GPS,
+    'alias' : IDL.Text,
     'time' : Time,
+    'walletAddr' : IDL.Text,
     'photoKey' : IDL.Text,
     'likersPrincipalID' : IDL.Vec(IDL.Text),
     'principalID' : IDL.Text,
@@ -28,6 +30,7 @@ export const idlFactory = ({ IDL }) => {
     'getAllMetadataByArtist' : IDL.Func([IDL.Text], [IDL.Vec(Metadata)], []),
     'getArtist' : IDL.Func([IDL.Text], [IDL.Opt(Artist)], ['query']),
     'getMetadata' : IDL.Func([IDL.Text], [IDL.Opt(Metadata)], ['query']),
+    'removeLike' : IDL.Func([IDL.Text, IDL.Text], [], []),
   });
   return Main;
 };
