@@ -1,6 +1,7 @@
 import { HttpAgent } from '@dfinity/agent';
 import { AuthClient, InternetIdentityAuthResponseSuccess } from '@dfinity/auth-client';
 import { createActor } from '../../declarations/backend';
+// import {createActor as createFrontendActor} from '../../declarations/frontend';
 import { User } from '../structs/User';
 
 export const authenticate = async () => {
@@ -11,6 +12,10 @@ export const authenticate = async () => {
     const agent = await HttpAgent.create({ identity });
     agent.fetchRootKey();
     const actor = createActor('bkyz2-fmaaa-aaaaa-qaaaq-cai', { agent });
+
+    // const frontendActor = createFrontendActor('bd3sg-teaaa-aaaaa-qaaba-cai', { agent });
+    // await frontendActor.authorize(identity.getPrincipal());
+    
     return new User(agent, actor);
   }
 
