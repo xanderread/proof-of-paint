@@ -1,19 +1,44 @@
 #root {
   display: inline-block;
   width: 100%;
+  padding-top: 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background-color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.logo {
+  height: 25vh;
+  width: auto;
+  max-width: 90%;
+  object-fit: contain;
 }
 
 .buttons {
-  float: right;
-  display: flex;
-  margin: 0.5rem;
+  position: absolute;
+  top: 20px;
+  right: 20px;
 }
 
 .debug {
   background-color: rgba(1, 1, 1, 0.05);
   color: var(--text-color);
   margin: 2rem;
-  margin-top: 4.5rem;
+  margin-top: 2rem;
   padding: 0.25rem 0.5rem;
   font-family: monospace;
 }
@@ -38,4 +63,9 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+/* Remove any top padding from the body if it exists */
+body {
+  padding-top: 0;
 }

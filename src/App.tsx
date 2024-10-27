@@ -1,6 +1,6 @@
 import './styles/app.css';
-
 import React, { createContext, useEffect, useState } from 'react';
+import proofOfPaymentLogo from './assets/proofofpaymentlogo.gif';
 
 import { authenticate, signin, signout } from './lib/util/authenticate';
 import Upload from './components/Upload';
@@ -45,7 +45,10 @@ function App() {
 
   return (
     <>
-      <UserContext.Provider value={user}>
+      <div className="header">
+        <div className="logo-container">
+          <img src={proofOfPaymentLogo} alt="Proof of Payment Logo" className="logo" />
+        </div>
         <div className="buttons">
           {!user || user.state === 'unauthenticated' ? (
             <button className="account-btn sign-in-btn" onClick={() => signInFn(setUser, true)}>
@@ -62,6 +65,8 @@ function App() {
             </button>
           )}
         </div>
+      </div>
+      <UserContext.Provider value={user}>
         {user && (
           <div className="debug">
             <p>State: {user.state}</p>
